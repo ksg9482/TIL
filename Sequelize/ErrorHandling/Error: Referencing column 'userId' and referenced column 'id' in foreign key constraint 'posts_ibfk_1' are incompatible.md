@@ -1,5 +1,3 @@
-# ErrorHandling
-
 ### Error: Referencing column 'userId' and referenced column 'id' in foreign key constraint 'posts_ibfk_1' are incompatible.
 #### 내용: Users table의 id를 posts table의 userId에 외래키로 관계성을 설정하려고 하는데 'id'와 'userId'는 서로 호환되지 않는다.
 * 원인:  Users table의 id는 BIGINT였는데 posts table의 userId는 INTEGER로 설정해 놓았다. 
