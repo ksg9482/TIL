@@ -6,8 +6,8 @@ ES 또는 ESM으로 알려진 ECMAScript 2015명세의 일부분으로 JavaScrip
 * ESM은 기본적으로 모든것이 private이기 때문에 export된 개체들만 다른 모듈에서 접근 가능하다.
 * import 키워드(ESM)를 쓸 때는 CommonJS와는 다르게 확장자를 구체적으로 명시해야 한다.
 * ESM은 암시적으로 strict mode에서 실행된다. 
-  * strict mode이기 때문에, require, export, module, exports, __filename, __dirname 등 몇가지 참조가 정의되지 않는다.
-  * ESM에서는 특별한 객체인 import.meta를 사용하여 현재 파일에 대한 참조를 얻을 수 있고, 이 값으로 절대 경로 형식에 대한 __filename과 __dirname을 재구성하는데 사용 할 수 있다.
+  * strict mode이기 때문에, require, export, module, exports, \__filename, \__dirname 등 몇가지 참조가 정의되지 않는다.
+  * ESM에서는 특별한 객체인 import.meta를 사용하여 현재 파일에 대한 참조를 얻을 수 있고, 이 값으로 절대 경로 형식에 대한 \__filename과 \__dirname을 재구성하는데 사용 할 수 있다.
 * ESM의 경우 전역범위에서 this는 undefined인 반면, CommonJS의 경우는 this가 exports와 같은 참조를 한다.
   * console.log(this === exports)  
 
