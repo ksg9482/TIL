@@ -13,3 +13,11 @@
 * 외래키(Foreign Key)는 xxx_id로 자동 생성
   * 다른 테이블의 id를 location으로 정의해주면 location_id 컬럼으로 생성.
 * users 테이블은 자동으로 생성되어 있음.
+
+### 마이그레이션 파일 생성 및 마이그레이트
+* python manage.py makemigrations 모델에 해당하는 마이그레이션 생성.
+* python manage.py migrate 생성한 마이그레이션으로 db에 테이블 생성.
+
+### 유저 테이블에 수퍼유저 생성
+* python manage.py createsuperuser 수퍼유저 생성.
+* 생성한 수퍼유저로 장고 admin 페이지 접근 가능.
