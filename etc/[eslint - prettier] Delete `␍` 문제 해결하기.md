@@ -20,3 +20,6 @@ auto는 각 os에 설정된 값을 이용하라는 구문이다.
 prettier 2.0 이전 기본값은 기존 파일들의 호환성을 위해 'auto'였으나,  2.0에서 기본 값이 LF로 지정되었다.
 
 prettier 측이 밝히는 이유는 개행 문자로 인해 git diff과 git blame의 어려움을 제거하고자 LF를 사용하기로 했다고 한다.
+
+#### 참조
+[https://prettier.io/blog/2020/03/21/2.0.0#breaking-changes](https://prettier.io/blog/2020/03/21/2.0.0#breaking-changes)
