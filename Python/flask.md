@@ -68,7 +68,16 @@ Flask(__name__)으로 설정하여 현재 위치를 flask 객체에 알려줘야
 * 중첩함수 안에 함수를 받을 함수를 만들고, 그 안에 인자를 받을 함수를 만듦.
   * 중첩함수의 depth를 하나 더 깊게 만든다.
   * 데코레이터 함수 -> 데코레이터 대상인 함수를 받는 함수 -> 데코레이터의 인자를 받는 함수
-
+```python
+def decorator1(num):
+    # wrapper를 하나 더 두어서 데코레이터가 받는 인자를 처리하도록 한다
+    def outer_wrapper(function):
+        def inner_wrapper(*args, **kwargs):
+            print('decoration1 {}'.format(num))
+            return function(*args, **kwargs)
+        return inner_wrapper
+    return outer_wrapper
+```
 ##### 번외
 문자열.format()
 * '{0}, {1}, {2}'.format('A', 'B', 'C') -> 'A, B, C'
