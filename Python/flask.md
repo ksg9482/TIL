@@ -83,3 +83,37 @@ def decorator1(num):
 * '{0}, {1}, {2}'.format('A', 'B', 'C') -> 'A, B, C'
   * format함수에 입력된 값으로 문자열 괄호의 값을 대체함.
   * format 매핑할 이름에 직접 할당할 수 도 있음 ('{a}, {b}'.format(a='aaaa', b='bbbb'))
+
+### routing 방법
+##### 기본
+```python
+@app.route("/")
+def hello() {
+    return "<div>hello<div>"
+}
+```
+* app.route를 바로 쓰면 기본적으로 GET 메서드
+
+##### 파라미터 받기
+```python
+@app.route("/profile/<username>")
+def get_profile(username) {
+    return "profile: " + username
+}
+```
+* @app.route()의 인수의 괄호(<>)로 파라미터를 받음
+* 함수의 인수와 동일한 변수명이여야 한다
+
+##### 타입을 지정한 파라미터 받기
+```python
+@app.route("/profile/<int:user_id>")
+def get_user(user_id) {
+    return "user_id: " + user_id
+}
+```
+* 괄호(<>)안에 타입을 먼저 지정하고 변수명을 선언할 경우 해당 변수는 지정한 타입으로 취급됨. 아무것도 안하면 기본 str
+* "user_id: %d" % user_id - 문자열 내부에 %d를 두어서 매핑된 값으로 치환할 수 있음
+  * %d: int
+  * %f: float
+  * %s: string
+* 만약 profile/abc 식으로 숫자가 아니라 문자열을 입력하면 int로 변환되지 않아 /profile/<int:user_id>에 접근할 수 없다.
