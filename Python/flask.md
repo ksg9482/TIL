@@ -117,3 +117,15 @@ def get_user(user_id) {
   * %f: float
   * %s: string
 * 만약 profile/abc 식으로 숫자가 아니라 문자열을 입력하면 int로 변환되지 않아 /profile/<int:user_id>에 접근할 수 없다.
+
+### flask로 정적페이지 로드
+* flask 하위 template 폴더에 html 위치.
+* render_template('file.html')함수를 통해 html을 렌더해서 전송
+
+#### flask로 정적페이지 로드시 경로를 찾지 못할 때
+* 가장 합리적인 방법은 static_url_path을 flask 객체 생성시 선언해 주는 것
+  * app = Flask(__name__, static_url_path='/static')
+  * static 폴더에 CSS등 정적파일 위치 표시
+    * template는 그대로 사용
+  * 서버에 있을 때와 웹에서 로드 되었을 때 서로 파일 위치가 달라짐
+  * static_url_path가 /static이니 src도 path 시작을 static으로 한다
