@@ -129,3 +129,35 @@ def get_user(user_id) {
     * template는 그대로 사용
   * 서버에 있을 때와 웹에서 로드 되었을 때 서로 파일 위치가 달라짐
   * static_url_path가 /static이니 src도 path 시작을 static으로 한다
+
+### jinja2
+파이썬 템플릿 엔진
+
+다음 2가지 문법이 핵심
+* {{변수명}}
+* {%파이썬 코드%}
+
+#### 반복문
+* {% for %} {% endfor %}
+* for로 시작해서 endfor로 끝난다. 블록 안에서는 들여쓰기 안해도 됨
+```python
+{% for value in values %}
+<li>{{ value }}</li>
+{% endfor %}
+```
+* values 길이 만큼 value가 반복해서 생성된다
+
+#### python 반복문 문법과 다른점
+```python
+<ul>
+    {% for index in range(values | length) %}
+        <li>{{ values[index] }} {{ loop.index }}</li>
+    {% endfor %}
+</ul>
+```
+* range() - 파이썬과 동일
+* len(values) - values | length 로 작성
+  * <iterable> | length 방식.
+* 반복문 인덱스 - loop.index
+  * 반복문의 반복 횟수 가져옴
+* values[index] - python과 동일
