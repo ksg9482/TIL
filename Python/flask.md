@@ -161,3 +161,11 @@ def get_user(user_id) {
 * 반복문 인덱스 - loop.index
   * 반복문의 반복 횟수 가져옴
 * values[index] - python과 동일
+
+#### 조건문
+{% if %} {% elif %} {% else %} {% endif %}
+* 들여쓰기 안해도 됨
+
+#### 주석 
+{# #}
+* \# 블럭 안에 넣기
