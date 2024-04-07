@@ -169,3 +169,62 @@ def get_user(user_id) {
 #### 주석 
 {# #}
 * \# 블럭 안에 넣기
+
+#### flask에서 cors 지원
+* cors는 request 뿐만아니라 response에도 cors 헤더가 있어야 함.
+* flask가 cors 처리 함수 제공해줌
+```python
+from flask_cors import CORS
+
+app = Flask(__name__)
+CORS(app)
+```
+CORS에 app을 인자로 넣으면 요청, 응답 객체에 cors 지원 헤더를 삽입해준다.
+
+#### api response로 json 반환
+make_response()함수 이용.
+* (value_dict, status_code) 인수로 이용
+* jsonify(key=value) or jsonify({key:value}) 형식으로 값 입력
+
+```python
+@app.route("/path/to", method=["GET", "POST", "PUT", "DELETE"])
+```
+* GET, PUT, DELETE와 POST 메서드 때 파라미터 값을 추출하는 방식 다름
+* GET, PUT, DELETE
+  * request.args.get('name')
+*POST
+  * request.get_json()
+  * body에서 꺼냄
+  * 변수에 넣어서 key 호출
+
+### 에러 핸들링
+* errorhandler를 이용해서 에러 처리
+  * return의 두번째 인자로 에러코드로 넘겨주지 않으면 200 성공으로 인지
+```python
+@app.errorhandler(404)  # 없는 페이지를 요청했을 때의 에러
+def page_not_found(error):
+    return "<h1>404 Error</h1>", 404
+```
+### 로깅
+logging 라이브러리 이용
+* flask 전용은 아니고 기본 제공 라이브러리. flask에서도 많이 씀
+* 로깅 라이브러리 이용시 파일화 하는 log level을 바꾸고 싶으면 거의 터미널 단위로 재실행 해야함.
+  * 맨처음 실행시 환경수준에서 설정되는 것으로 추정
+```python
+import logging
+# 파일로 남기기 위해서는 filename='test.log' 파라미터, 어느 로그까지 남길 것인지
+logging.basicConfig(filename='test.log', level=logging.ERROR)
+
+logging.debug("debug")
+logging.info("info")
+logging.warning("warning")
+# level=logging.ERROR 지정시 여기부터 파일화
+logging.error("error")
+logging.critical("critical")
+```
+#### 로깅핸들러
+* FileHandler - 파일로 로그를 저장
+* RotatingFileHandler - 파일로 로그를 저장하되 정해진 사이즈를 넘으면 새 파일로 생성
+  * maxBytes - 하나의 파일 사이즈
+  * backupCount - 파일 갯수
+일반적으로 RotatingFileHandler 사용
