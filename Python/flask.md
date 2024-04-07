@@ -228,3 +228,24 @@ logging.critical("critical")
   * maxBytes - 하나의 파일 사이즈
   * backupCount - 파일 갯수
 일반적으로 RotatingFileHandler 사용
+
+### 기타 데코레이터
+```python
+@app.before_first_request
+```
+* 기동 후 가장 처음 들어온 HTTP 요청에만 실행.
+
+```python
+@app.before_request
+```
+* HTTP 요청이 들어올 때마다 실행
+
+before_first_request, before_request 는 인자를 전달할 수 없다
+
+```python
+@app.after_request
+```
+* 독특함. HTTP 요청 처리가 끝나고, 응답하기 바로 직전에 실행
+* api에 매핑된 함수 처리 -> after_request 처리 순
+* response를 리턴해야 함
+* 호출 추적하면서 로그 작성할 때 쓰는 건가?
