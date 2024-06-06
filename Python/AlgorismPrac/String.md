@@ -167,3 +167,31 @@ class Solution:
         result_list.reverse()
         return "".join(result_list) if result_list else "0" 
 ```
+
+https://leetcode.com/problems/valid-palindrome/
+
+```python
+class Solution:
+    def isPalindrome(self, s: str) -> bool:
+        """
+        1. lowercase 변환, 특수문자 및 공백 제거
+          * 대소문자는 미리 변환이 좋을까 아니면 비교때 변환이 좋을까?
+        2. 문자열 반 나눠서 스택에 넣기
+          * 만약 홀수면 가운데는 필요없음.
+        3. 스택에서 하나씩 빼며 비교
+        """
+        if len(s) == 1:
+            return True
+        
+        only_str = re.sub(r"[^A-Za-z0-9]","", s).lower()
+        mid = len(only_str) // 2
+        left = list(only_str[0:mid])
+        right = list(only_str[mid if len(only_str) % 2 == 0 else (mid + 1)::])
+
+        for i in range(len(left)):
+            word = left.pop()
+            if word != right[i]:
+                return False
+
+        return True
+```
