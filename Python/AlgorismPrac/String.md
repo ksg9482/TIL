@@ -108,3 +108,62 @@ class Solution:
 
         return True
 ```
+
+https://leetcode.com/problems/find-the-index-of-the-first-occurrence-in-a-string/description/
+```python
+class Solution:
+    def strStr(self, haystack: str, needle: str) -> int:
+        haystack_len = len(haystack)
+        needle_len = len(needle)
+
+        if haystack_len < needle_len:
+            return -1
+        
+        for i in range(haystack_len):
+            if needle == haystack[i:i+needle_len]:
+                return i
+        
+        return -1
+```
+
+https://leetcode.com/problems/add-binary/submissions/1279023853/
+
+```python
+class Solution:
+    def addBinary(self, a: str, b: str) -> str:
+        """
+        1. a 바이너리 더하기
+        2. b 바이너리 더하기
+        3. 계산
+        4. 결과값 바이너리 변환
+        """
+        a_value = 0
+        b_value = 0
+        value_list = [1]
+        for i in range(len(a)-1, -1, -1):
+            if len(value_list) <= (len(a)-1)-i:
+                value_list.append(value_list[-1] * 2)
+
+            if a[i] == "1":
+                a_value += value_list[(len(a)-1)-i]
+
+        for i in range(len(b)-1, -1, -1):
+            if len(value_list) <= (len(b)-1)-i:
+                value_list.append(value_list[-1] * 2)
+
+            if b[i] == "1":
+                b_value += value_list[(len(b)-1)-i]
+
+        value_sum = a_value + b_value
+        result_list = []
+        is_run = True
+        while is_run:
+            if value_sum == 0:
+                break
+            div = divmod(value_sum, 2)
+            value_sum = div[0]
+            result_list.append(str(div[1]))
+
+        result_list.reverse()
+        return "".join(result_list) if result_list else "0" 
+```
