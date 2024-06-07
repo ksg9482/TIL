@@ -239,3 +239,28 @@ class Solution:
 
         return True
 ```
+
+https://leetcode.com/problems/valid-anagram/description/
+
+```python
+class Solution:
+    def isAnagram(self, s: str, t: str) -> bool:
+        if s == t:
+            return True
+        
+        if len(s) != len(t):
+            return False
+        
+        s_dict = {}
+        t_dict = {}
+        for i in range(len(s)):
+            s_dict[s[i]] = s_dict.get(s[i], 0) + 1
+            t_dict[t[i]] = t_dict.get(t[i], 0) + 1
+
+        for key in s_dict:
+            # anagram이면 dict의 key가 동일해야 하고, 내용도 동일해야 함.
+            if key not in t_dict or s_dict[key] != t_dict[key]:
+                return False
+            
+        return True
+```
