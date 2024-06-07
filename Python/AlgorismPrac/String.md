@@ -206,8 +206,8 @@ class Solution:
         """
         start = 0
         end = len(s) - 1
-        mid = end // 2
-        for i in range(mid): # mid로 반 나눈 값을 써도 s가 길면 선형으로 늘어난다.
+        mid = end // 2 # 나머지가 있어도 int되서 잘림. 어차피 range 넘어가면 종료.
+        for i in range(mid + 1): # mid로 반 나눈 값을 써도 s가 길면 선형으로 늘어난다.
             if start == end or start > end:
                 break
             s[start], s[end] = s[end], s[start] # 튜플 패킹과 언패킹으로 동작한다고?
