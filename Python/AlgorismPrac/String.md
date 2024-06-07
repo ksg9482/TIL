@@ -195,3 +195,48 @@ class Solution:
 
         return True
 ```
+
+https://leetcode.com/problems/valid-palindrome/description/
+
+"""
+Write a function that reverses a string. The input string is given as an array of characters s.
+
+You must do this by modifying the input array in-place with O(1) extra memory.
+
+ 
+
+Example 1:
+
+Input: s = ["h","e","l","l","o"]
+Output: ["o","l","l","e","h"]
+Example 2:
+
+Input: s = ["H","a","n","n","a","h"]
+Output: ["h","a","n","n","a","H"]
+ 
+
+Constraints:
+
+1 <= s.length <= 105
+s[i] is a printable ascii character.
+"""
+
+
+from typing import List
+
+
+class Solution:
+    def reverseString(self, s: List[str]) -> None:
+        """
+        Do not return anything, modify s in-place instead.
+        """
+        start = 0
+        end = len(s) - 1
+        mid = end // 2
+        for i in range(mid): # mid로 반 나눈 값을 써도 s가 길면 선형으로 늘어난다.
+            if start == end or start > end:
+                break
+            s[start], s[end] = s[end], s[start] # 튜플 패킹과 언패킹으로 동작한다고?
+            start += 1
+            end -= 1
+    # O(n) 시간복잡도. O(1)이 불가능한 이유? 모든 문자열을 뒤집으려면 모든 문자열에 접근해야 함.
