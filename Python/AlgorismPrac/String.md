@@ -215,3 +215,27 @@ class Solution:
             end -= 1
     # O(n) 시간복잡도. O(1)이 불가능한 이유? 모든 문자열을 뒤집으려면 모든 문자열에 접근해야 함.
 ```
+
+https://leetcode.com/problems/isomorphic-strings/description/
+
+```python
+class Solution:
+    def isIsomorphic(self, s: str, t: str) -> bool:
+        if len(s) == 1 and s != t:
+            return False
+        s_dict = {}
+        t_dict = {}
+        for i in range(len(s)):
+            # 글자를 dict에 넣는다.
+            if s_dict.get(s[i]) == None:
+                s_dict[s[i]] = t[i]
+                t_dict[t[i]] = s[i]
+            
+            # 이미 있는 글자면 값 확인. 같은 순서, 같은 형식 아니면 False
+            if s_dict[s[i]] != t[i]:
+                return False
+        if len(s_dict) != len(t_dict): # 등장 문자 수가 같아야 한다.
+            return False
+
+        return True
+```
