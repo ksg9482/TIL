@@ -264,3 +264,66 @@ class Solution:
             
         return True
 ```
+
+https://leetcode.com/problems/word-pattern/description/
+
+```python
+class Solution:
+    def wordPattern(self, pattern: str, s: str) -> bool:
+        splited_s = s.split(" ")
+        pattern_len = len(pattern)
+        pattern_dict = {}
+        s_dict = {}
+
+        if pattern_len != len(splited_s):
+            return False
+        
+        for i in range(pattern_len):
+            if pattern_dict.get(pattern[i]) == None:
+                pattern_dict[pattern[i]] = splited_s[i]
+                s_dict[splited_s[i]] = pattern[i]
+            else:
+                if pattern_dict[pattern[i]] != splited_s[i]:
+                    return False
+
+        if len(pattern_dict) != len(s_dict):
+            return False
+        
+        return True
+```
+
+https://leetcode.com/problems/reverse-vowels-of-a-string/description/
+
+```python
+class Solution:
+    def reverseVowels(self, s: str) -> str:
+        start = 0
+        end = len(s) - 1
+        vowel_dict = {
+            "a":"a", "e":"e", "i":"i", "o":"o", "u":"u", 
+            "A":"A", "E":"E", "I":"I", "O":"O", "U":"U", 
+        }
+        s_list = list(s)
+        for i in range(end + 1):
+
+```
+
+https://leetcode.com/problems/first-unique-character-in-a-string/description/
+
+```python
+class Solution:
+    def firstUniqChar(self, s: str) -> int:
+        s_num_dict = {}
+
+        for i in range(len(s)):
+            if s_num_dict.get(s[i]) == None:
+                s_num_dict[s[i]] = {"idx": i, "count": 1}
+            else:
+                s_num_dict[s[i]]['count'] += 1
+
+        for data in list(s_num_dict.items()):
+            if data[1]['count'] == 1:
+                return data[1]['idx']
+            
+        return -1
+```
