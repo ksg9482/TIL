@@ -1,3 +1,15 @@
+https://leetcode.com/problems/length-of-last-word/description/
+
+```python
+class Solution:
+    def lengthOfLastWord(self, s: str) -> int:
+        s_list = s.split(" ")
+        filtered = list(filter(lambda x:x != "" ,s_list))
+
+        return len(filtered[-1])
+```
+
+
 https://leetcode.com/problems/roman-to-integer/submissions/1277907779/
 
 ```python
