@@ -327,3 +327,46 @@ class Solution:
             
         return -1
 ```
+
+https://leetcode.com/problems/reverse-words-in-a-string-iii/
+
+```python
+class Solution:
+    def reverseWords(self, s: str) -> str:
+        if s == " ":
+            return s
+        
+        s_list = s.split(" ")
+        ans = []
+        for text in s_list:
+            reverse_list = []
+            for i in range(len(text) - 1, -1, -1):
+                reverse_list.append(text[i])
+            ans.append("".join(reverse_list))
+        return " ".join(ans)
+```
+
+https://leetcode.com/problems/minimum-index-sum-of-two-lists/description/
+
+```python
+class Solution:
+    def findRestaurant(self, list1: List[str], list2: List[str]) -> List[str]:
+        text_dict = {}
+        common_text_dict = {}
+        for i in range(len(list1)):
+            text_dict[list1[i]] = i
+                
+        for i in range(len(list2)):
+            common_text_val = text_dict.get(list2[i])
+            if common_text_val != None:
+                common_text_dict[list2[i]] = common_text_val + i
+
+        items = list(common_text_dict.items())
+        
+        sorted_list = sorted(items, key=lambda x: x[1])
+
+        target_num = sorted_list[0][1]
+        ans = list(filter(lambda x: x[1] == target_num, sorted_list))
+
+        return [text[0] for text in ans]
+```
