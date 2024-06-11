@@ -91,6 +91,28 @@ class Solution:
         return "".join(result)
 ```
 
+문자열, 배열 차이인데 시간차이가 굉장히 많이남. 문자열 더하기와 배열에 넣기가 누적되면 시간차이가 발생하나??
+```
+class Solution:
+    def longestCommonPrefix(self, strs: List[str]) -> str:
+        result = ""
+        head = strs[0]
+        is_break = False
+        
+        for i in range(len(head)):
+            for word in strs:
+                if (i >= len(word)) or (head[i] != word[i]):
+                    is_break = True
+                    break
+
+            if is_break:
+                break
+
+            result += head[i]
+            
+        return result
+```
+
 https://leetcode.com/problems/valid-parentheses/submissions/1278489272/
 
 ```python
