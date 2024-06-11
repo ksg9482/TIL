@@ -4,6 +4,7 @@ https://leetcode.com/problems/length-of-last-word/description/
 class Solution:
     def lengthOfLastWord(self, s: str) -> int:
         s_list = s.split(" ")
+        # O(n) -> filter 새 리스트 반환, list 새 리스트 반환.
         filtered = list(filter(lambda x:x != "" ,s_list))
 
         return len(filtered[-1])
@@ -39,7 +40,7 @@ class Solution:
             
             if i + 1 < s_length:
                 next_symbol = s[i + 1]
-            
+            # 조건때문에 다음이 4, 9로 변하는건 계산하고 jump로 다음거 무시. 더 좋은 방법이 있을듯. 
             if s_symbol == "I" and next_symbol == "V":
                 num = 4
                 jump = True
@@ -70,7 +71,7 @@ class Solution:
 https://leetcode.com/problems/longest-common-prefix/submissions/1278416458/
 
 ```python
-# 시간복잡도 개선 필ㅇㅅ
+# 시간복잡도 개선 필요
 class Solution:
     def longestCommonPrefix(self, strs: List[str]) -> str:
         result = []
@@ -91,7 +92,7 @@ class Solution:
         return "".join(result)
 ```
 
-문자열, 배열 차이인데 시간차이가 굉장히 많이남. 문자열 더하기와 배열에 넣기가 누적되면 시간차이가 발생하나??
+문자열, 배열 차이인데 시간차이가 굉장히 많이남. 문자열 더하기와 배열에 넣기가 누적되면 시간차이가 발생하나?? 배열50ms, 문자 30ms
 ```
 class Solution:
     def longestCommonPrefix(self, strs: List[str]) -> str:
