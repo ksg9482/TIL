@@ -169,3 +169,31 @@ class Solution:
 
         return decoded_message
 ```
+
+
+https://leetcode.com/problems/permutation-difference-between-two-strings/description/
+
+문자key: 인덱스value
+인덱스값끼리 비교해서 그 차를 계속 더한다.
+
+47ms, Beats 6.95%.
+16.44MB, Beats 84.10%
+
+성적이 않좋다. 솔루션 전체가 기준이라면 더 빠른 언어로 작성된게 성적이 좋을것이고, 파이썬만 해당이라면 여기서 더 어떻게 향상시킬지 모르겠다
+O(n).
+
+```python
+class Solution:
+    def findPermutationDifference(self, s: str, t: str) -> int:
+        s_idx_dict = {}
+        count = 0
+
+        for i in range(len(s)):
+            s_idx_dict[s[i]] = i
+        
+        for j in range(len(t)):
+            diff = j - s_idx_dict[t[j]]
+            count += abs(diff)
+
+        return count
+```
