@@ -197,3 +197,40 @@ class Solution:
 
         return count
 ```
+
+https://leetcode.com/problems/number-of-arithmetic-triplets/description/
+
+숫자key: 인덱스value
+diff를 더하면 값이 나오고 그 값이 딕셔너리의 키에 해당하면 nums에 있는거.
+만약 diff 더한 값이 최고값보다 크면 arithmetic triplet을 구성할 수 없다. 거기서 break. 
+내용이 아니라 카운트를 반환하는 것이니 카운트를 센다.
+
+36ms, Beats 90.36%
+16.50MB, Beats 41.99%
+
+시간복잡도는 꽤 괜찮게 나왔다. 하지만 공간복잡도에서 아쉬움을 보인다. 
+O(n).
+
+```pythpn
+class Solution:
+    def arithmeticTriplets(self, nums: List[int], diff: int) -> int:
+        nums_idx_dict = {}
+        nums_len = len(nums)
+        maximum = 0
+        count = 0
+
+        for i in range(nums_len):
+            nums_idx_dict[nums[i]] = i
+            maximum = nums[i]
+
+        for num in nums:
+            diff_add_one = num + diff
+            diff_add_two = num + (diff * 2)
+            if diff_add_one > maximum or diff_add_two > maximum:
+                break
+
+            if nums_idx_dict.get(diff_add_one) != None and nums_idx_dict.get(diff_add_two) != None:
+                count += 1
+            
+        return count
+```
