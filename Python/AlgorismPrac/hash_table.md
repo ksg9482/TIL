@@ -382,3 +382,33 @@ class Solution:
             people_list.sort(key=lambda x : -x[1])
         return reduce(lambda acc, cur : acc + [cur[0]], people_list, [])
 ```
+
+https://leetcode.com/problems/sort-the-people/description/
+
+로드 번호 키: 색깔 set 값 -> set의 길이가 3 이상인 것만 카운트
+
+30ms. Beats 86.56%
+16.38MB. Beats 96.08%
+
+O(n)? O(nk)?
+
+```python
+class Solution:
+    def countPoints(self, rings: str) -> int:
+        rod_dict = {}
+        count = 0
+
+        for i in range(0, len(rings) - 1, 2):
+            rod_with_ring = rings[i : i + 2]
+            ring_color, rod_num = rod_with_ring
+            if rod_dict.get(rod_num) == None:
+                rod_dict[rod_num] = set()
+
+            rod_dict[rod_num].add(ring_color)
+        
+        for rod in rod_dict:
+            if len(rod_dict[rod]) == 3:
+                count += 1
+        
+        return count
+```
