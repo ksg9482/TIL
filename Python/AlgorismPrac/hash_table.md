@@ -234,3 +234,67 @@ class Solution:
             
         return count
 ```
+
+https://leetcode.com/problems/check-if-the-sentence-is-pangram/description/
+
+알파벳이 적어도 하나씩 포함되는가 문제
+1. 순회하면서 사전에 +1 한다
+2. count를 두고 사전에 처음 넣는거면 count +1
+3. 만약 count가 26이 되면 멈춰도 된다. 어차피 true
+
+42ms. Beats 13.08%
+16.44MB. Beats 80.98%
+
+
+시간복잡도가 너무 낮다. 해시테이블이니 일단 딕셔너리 활용해서 풀었는데, set을 쓰면 더 빠를것 같다
+O(n).
+
+```python
+class Solution:
+    def checkIfPangram(self, sentence: str) -> bool:
+        alpha_dict = {}
+        alpha_num_limit = 26
+        count = 0
+        for alpha in sentence:
+            if count >= alpha_num_limit:
+                return True
+            
+            if alpha_dict.get(alpha) == None:
+                alpha_dict[alpha] = 0
+                count += 1
+            else:
+                alpha_dict[alpha] += 1
+        
+        return True if count >= alpha_num_limit else False
+```
+
+https://leetcode.com/problems/find-the-xor-of-numbers-which-appear-twice/description/
+
+2번 나오는 요소
+XOR연산
+
+순회하면서 각 요소가 몇번 나오나 확인. 그중 두 번 나온것만 연산
+
+46ms. Beats 69.09%
+16.36MB. Beats 93.94%
+
+일반 더하기가 아님. 이거때문에 좀 해맸다. xor 함수로 하니까 됨. xor연산에 대해 더 알아봐야겠다
+O(n).
+
+```python
+class Solution:
+    def duplicateNumbersXOR(self, nums: List[int]) -> int:
+        nums_dict = {}
+        num_list = []
+        for num in nums:
+            if nums_dict.get(num) == None:
+                nums_dict[num] = 1
+            else:
+                nums_dict[num] += 1
+        
+        for num in nums_dict:
+            if nums_dict[num] == 2:
+                num_list.append(num)
+        
+        return reduce(xor, num_list, 0)
+```
