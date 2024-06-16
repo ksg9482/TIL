@@ -361,3 +361,24 @@ class Solution:
 
         return answer
 ```
+
+https://leetcode.com/problems/sort-the-people/description/
+
+키를 기준으로 배열을 정렬. 바로 구하면 될거 같은데?
+
+471ms. Beats 6.08%
+17.06MB. Beats 59.49%
+
+문제는 풀었지만 시간복잡도를 보니 이 접근방식이 아니다.
+
+O(n). 
+
+```python
+class Solution:
+    def sortPeople(self, names: List[str], heights: List[int]) -> List[str]:
+        people_list = []
+        for name, height in zip(names, heights):
+            people_list.append((name, height))
+            people_list.sort(key=lambda x : -x[1])
+        return reduce(lambda acc, cur : acc + [cur[0]], people_list, [])
+```
