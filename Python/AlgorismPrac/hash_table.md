@@ -298,3 +298,66 @@ class Solution:
         
         return reduce(xor, num_list, 0)
 ```
+
+https://leetcode.com/problems/find-maximum-number-of-string-pairs/description/
+
+최대쌍 수 반환
+사전에 넣어서 관리. {cd:0} -> 확인할 땐 dc로 리버스 해서 확인
+페어가 몇개인지 찾는다. 시작은 0. 페어가 없으면 0을 반환.
+각 문자열을 최대 한 쌍.
+
+44ms. Beats 84.47%
+16.44MB. Beats 78.10%
+
+O(n).
+
+```python
+class Solution:
+    def maximumNumberOfStringPairs(self, words: List[str]) -> int:
+        word_dict = {}
+        for word in words:
+            reversed_word = "".join(reversed(word))
+
+            if word_dict.get(reversed_word) == None:
+                word_dict[word] = 0
+            else:
+                word_dict[reversed_word] += 1
+
+        pairs = word_dict.items()
+        pair_count = 0
+        for pair in pairs:
+            pair_count += pair[1]
+
+        return pair_count
+```
+
+https://leetcode.com/problems/subarrays-distinct-element-sum-of-squares-i/description/
+
+부분배열을 다 합하는 문제
+각 부분배열의 개별 개수의 제곱을 더한다.
+[1] -> 1^2
+[1,2,1] -> 1, 2 -> 2^2 : 요소는 3개지만 종류는 2개.
+
+요소는 반드시 1개를 넘는다.(전체 빈배열 없음. 하위배열 빈배열 없음)
+
+211ms. Beats 13.79%
+16.50MB. Beats 55.84%
+
+시간복잡도가 바닥이다. 배열을 이용했는데, 팩토리얼 구할 때 메모이제이션 하는 식으로 이 문제도 응용할 수 있지 않을까?
+
+O(n^2). 부분배열을 구하는 과정에서 순회 안에서 재순회 한다.
+
+```python
+class Solution:
+    def sumCounts(self, nums: List[int]) -> int:
+        answer = 0
+        count = 1 # 부분배열 안에서 처리
+        for i in range(len(nums), 0, -1): # 전체에서 부분으로 줄여가는게 편함
+            for j in range(i): # 부분 배열
+                # 요소를 다 더하는게 아니라 종류 -> set
+                subarray = list(set(nums[j: j + count]))
+                answer += (len(subarray) ** 2)
+            count += 1
+
+        return answer
+```
