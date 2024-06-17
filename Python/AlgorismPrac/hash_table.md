@@ -412,3 +412,70 @@ class Solution:
         
         return count
 ```
+
+https://leetcode.com/problems/check-if-all-characters-have-equal-number-of-occurrences/description/
+
+모든 문자 개수가 동일한지 문제. 문자별 카운트를 집계한다
+처음 나온것은 한 개는 있다는 뜻이니 카운트 1부터 시작
+
+{문자:카운트} 사전이 생기면 각 카운트를 비교한다. 어차피 하나라도 다르면 False. 처음것으로 계속 비교
+순회중 다른 카운트가 있으면 종료.
+
+38ms. Beats 58.88%
+16.62MB. Beats 24.85%
+
+O(n))
+
+```python
+class Solution:
+    def areOccurrencesEqual(self, s: str) -> bool:
+        s_dict = {}
+        for text in s:
+            if s_dict.get(text) == None:
+                s_dict[text] = 1
+            else: 
+                s_dict[text] += 1
+
+        s_counts = list(s_dict.items())
+
+        if len(s_counts) == 1:
+            return True
+
+        count_start_idx = 1
+        for i in range(0, len(s_counts)):
+            if s_counts[count_start_idx][1] != s_counts[i][1]:
+                return False
+        return True
+```
+
+https://leetcode.com/problems/unique-number-of-occurrences/
+
+요소 개수가 유니크해야 한다. 2가 1개, 3이 3개 -> 1, 3으로 각각 유니크.  
+사전을 2개 만들자. 
+1. 요소 별 개수 사전
+2. 별 개수별 사전. 중복이 없다면 값이 1이다.
+
+56ms. Beats 5.86%
+16.74MB. Beats 21.00%
+
+이 접근방식이 아니다. 사전을 한 번만 사용해도 되는 문제일까? 
+O(n).
+
+```python
+class Solution:
+    def uniqueOccurrences(self, arr: List[int]) -> bool:
+        arr_count_dict = {} # 갯수 세서 사전
+        unique_check_dict = {} # 사전의 카운트 개수 : 요소 -> 만약 키에 중복이 있으면 갯수가 같다는 뜻. 유니크하지 않음
+        for item in arr:
+            if arr_count_dict.get(item) == None:
+                arr_count_dict[item] = 1
+            else:
+                arr_count_dict[item] += 1
+        
+        for key in arr_count_dict:
+            if unique_check_dict.get(arr_count_dict[key]) == None:
+                unique_check_dict[arr_count_dict[key]] = 1
+            else:
+                return False
+        return True
+```
