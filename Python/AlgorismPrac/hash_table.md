@@ -6,6 +6,9 @@ https://leetcode.com/problems/number-of-good-pairs/
 
 페어일 때 지금까지 몇번 나왔는지 결과값에 계속 더한다
 
+29ms.Beats 93.58%
+16.49MB. Beats 73.63%
+
 순회 한번이니 O(n).
 
 ```python
