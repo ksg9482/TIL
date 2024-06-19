@@ -79,4 +79,18 @@ class Solution:
                 return word
 
         return ""
+
+# ver.2
+"""
+word와 word 뒤집어서 바로 비교. 확실히 빨라졌다
+79ms. Beats 46.55%
+16.70MB. Beats 14.70%
+"""
+class Solution:
+    def firstPalindrome(self, words: List[str]) -> str:
+        for word in words:
+            if word == word[::-1]:
+                return word
+
+        return ""
 ```
