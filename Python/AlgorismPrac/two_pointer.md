@@ -193,3 +193,91 @@ class Solution:
 
         return ans
 ```
+
+https://leetcode.com/problems/middle-of-the-linked-list/description/
+
+먼저 한 번 순회해서 총 길이 파악. 연결리스트는 거꾸로 찾아갈 수 없다.
+길이의 반에 해당하는 노드 반환. 전체 연결리스트의 길이에 따라 반환하는 방식 달라짐.
+홀수면 가운데, 짝수면 가운데 + 1
+
+43ms. Beats 7.40%
+16.44MB. Beats 67.74%
+
+연결리스트는 일단 끝까지 순회해야 전체길이를 알 수 있는데 어떻게 풀어야 좋을까?
+
+O(n). 끝까지 가는건 맞는것 같다. 투포인터를 활용하는 방법에 해결법이 있을듯 하다
+
+```python
+class Solution:
+    def middleNode(self, head: Optional[ListNode]) -> Optional[ListNode]:
+        head_len = 0
+        node = head
+        while node:
+            head_len += 1
+            node = node.next
+
+        node = head # node 소모했으니 다시 채우기
+        mid = head_len // 2 # 홀수면 올려서 +1한다
+        for i in range(mid):
+            node = node.next
+
+        return node
+```
+
+https://leetcode.com/problems/sort-array-by-parity/description/
+
+짝수 -> 홀수 순으로 정렬된 리스트를 반환하는 문제. 짝홀만 정렬하면 되고 차순정렬은 필요없음
+단순하게 앞뒤로 포인터 잡고 서로 교환하자. 앞이 홀수면 앞 포인터 일시 정지. 뒤가 짝수면 뒤 포인터 일시정지.
+서로 교환하는 식으로 반복.
+
+68ms. Beats 53.50%
+17.40MB. Beats 60.99%
+
+O(n). 리스트가 커지면 연산도 선형으로 증가한다
+
+```python
+class Solution:
+    def sortArrayByParity(self, nums: List[int]) -> List[int]:
+        start = 0
+        end = len(nums) - 1
+        while end > start:
+            if not nums[start] % 2 == 0 and nums[end] % 2 == 0:
+                nums[start], nums[end] = nums[end], nums[start]
+
+            if nums[start] % 2 == 0:
+                start += 1
+
+            if not nums[end] % 2 == 0:
+                end -= 1
+            
+        return nums
+```
+
+https://leetcode.com/problems/largest-positive-integer-that-exists-with-its-negative/description/
+
+일단 정렬한다. [-9, -3, -1, 2, 3, 10]처럼 될 것. 연산했을 때 0이면 매칭.
+nums[end] - nums[start] < 0 -> 더 작은 음수를 찾아야 한다. start + 1
+nums[end] - nums[start] > 0 -> 더 작은 양수를 찾아야 한다. end - 1
+
+103ms. Beats 77.47%
+16.64MB. Beats 97.08%
+
+O(nlogn). 정렬을 거치기 때문에 정렬 시간복잡도인 O(nlogn)이 적용.
+
+```python
+class Solution:
+    def findMaxK(self, nums: List[int]) -> int:
+        sorted_nums = sorted(nums)
+        start = 0
+        end = len(sorted_nums) - 1
+
+        while end > start:
+            if sorted_nums[end] + sorted_nums[start] == 0:
+                return sorted_nums[end]
+            elif sorted_nums[end] + sorted_nums[start] < 0:
+                start += 1
+            else:
+                end -= 1
+
+        return -1
+```
