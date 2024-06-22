@@ -281,3 +281,70 @@ class Solution:
 
         return -1
 ```
+
+"""
+https://leetcode.com/problems/intersection-of-two-arrays/description/
+
+중복된 값을 리스트로 만드는 문제. 우선 set을 만들어서 유니크한 집합을 만들자
+또 다른 리스트를 순회하면서 set에 중복값 있나 비교.
+값이 있으면 중복값이니 리스트에 넣어서 반환 
+
+40ms. Beats 92.43%
+16.59MB. Beats 95.53%
+
+O(n). 각 리스트를 한번씩 순회한다. set을 리스트로 바꾸는 것도 O(n).
+"""
+
+from collections import Counter
+from functools import reduce
+from operator import xor
+from typing import List, Optional
+
+class Solution:
+    def intersection(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        ans = set()
+        num_1_dic = {}
+        for num_1 in nums1:
+            if not num_1_dic.get(num_1):
+                num_1_dic[num_1] = 1 # 그냥 0으로 넣으면 암묵적으로 False처리
+        for num_2 in nums2:
+            if num_1_dic.get(num_2):
+                ans.add(num_2)
+        
+        return list(ans)
+
+https://leetcode.com/problems/remove-palindromic-subsequences/
+
+이미 팰린드롬이면 바로 삭제 가능. 가장 적은 삭제횟수 1.
+
+중요한 점은 a, b 둘 만 있다는 것. 그리고 팰린드롬이면 연속적이지 않아도 된다.
+극단적으로 보면 a 먼저 다 지우고, b 다 지우면 2번이지 않을까?
+이미 팰린드롬 = 1
+a, b 중 하나만 있다 = 1
+a, b 둘 다 있다 = 2
+빈배열 = 0
+
+28ms. Beats 92.29%
+16.45MB. Beats 62.29%
+
+어차피 a, b 두 개가 나오면 2이다. 맨 앞 글자와 다른 글자가 나오면 바로 응답 반환하는 방식.
+
+O(n). 하지만 투 포인터를 사용하는 방식은 어떻게 하면 좋을까?
+
+```python
+class Solution:
+    def removePalindromeSub(self, s: str) -> int:
+        if s == 0:
+            return 0
+        
+        if s == "".join(reversed(s)):
+            return 1
+        
+        s_list = list(s)
+        s_start = s_list[1]
+        for s_char in range(1, len(s_list)):
+            if not s_char == s_start:
+                return 2
+        
+        return 1
+```
