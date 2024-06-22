@@ -348,3 +348,41 @@ class Solution:
         
         return 1
 ```
+
+https://leetcode.com/problems/di-string-match/description/
+
+I, D에 매칭되는 숫자 리스트를 반환하는 문제.
+중요한건 유효한 게 여러개면 그 중 하나만 하면 된다는 것. 즉, 순서 상관은 없고 조건만 만족하면 된다.
+num[i] < num[j]면 I.
+num[i] > num[j]면 D.
+
+순서관계 없으면 그냥 숫자 배열 만들고 앞, 뒤 투포인터로 조건맞춰 넣으면 되지 않을까?
+
+* 배열 길이는 n + 1임. 주의할 것.
+
+45ms. Beats 90.06%
+17.75MB. Beats 81.41%
+
+O(n). 
+
+```python
+class Solution:
+    def diStringMatch(self, s: str) -> List[int]:
+        s_len = len(s)
+        nums = [i for i in range(s_len + 1)]
+        start = 0
+        end = s_len
+
+        ans = []
+        for s_char in s:
+            if s_char == "I":
+                ans.append(nums[start])
+                start += 1
+            else:
+                ans.append(nums[end])
+                end -= 1
+        
+        #길이가 n + 1이므로 num요소가 1개 남음. 그건 맨 뒤에 삽입. start == end
+        ans.append(nums[start])
+        return ans
+```
