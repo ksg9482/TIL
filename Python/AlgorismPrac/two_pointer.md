@@ -386,3 +386,74 @@ class Solution:
         ans.append(nums[start])
         return ans
 ```
+
+https://leetcode.com/problems/merge-two-2d-arrays-by-summing-values/description/
+
+그냥 순서대로 풀기. 두 리스트는 오름차순으로 정렬되어 있다.
+첫번째 리스트의 키값을 사전에 넣는다.
+두번쩨 리스트의 키값을 사전에 넣으면서 연산.
+사전을 리스트화 해서 반환한다
+
+set으로 인덱스를 관리한다. 인덱스는 유일해야 한다.
+
+58ms. Beats 64.89%
+16.71MB. Beats 40.43%
+
+O(nlogn). sort 과정으로 인해 nlogn.
+
+```python
+class Solution:
+    def mergeArrays(self, nums1: List[List[int]], nums2: List[List[int]]) -> List[List[int]]:
+        nums1_idx_to_value = {}
+        idx_set = set()
+        for i_1, num_1 in nums1:
+            idx_set.add(i_1)
+            nums1_idx_to_value[i_1] = num_1
+
+        for i_2, num_2 in nums2:
+            idx_set.add(i_2)
+            if not nums1_idx_to_value.get(i_2):
+                nums1_idx_to_value[i_2] = num_2
+            else:
+                nums1_idx_to_value[i_2] += num_2
+        
+        return [[i,nums1_idx_to_value[i]] for i in sorted(idx_set)]
+```
+
+https://leetcode.com/problems/squares-of-a-sorted-array/description/
+
+절대값 기준 가장 큰값은 배열의 0, -1에 존재. 서로 비교하면서 가운데로 모으기.
+인덱스 둘이 같아지면 while종료. 같아진 인덱스는 마지막에 삽입.
+배열을 뒤집으면 완료.
+
+
+160ms. Beats 31.74%
+18.56MB. Beats 82.18%
+
+O(n).
+
+```python
+class Solution:
+    def sortedSquares(self, nums: List[int]) -> List[int]:
+        nums_len = len(nums)
+        if nums_len == 1:
+            return [nums[0] ** 2]
+        start = 0
+        end = len(nums) - 1
+        ans = []
+        while start < end:
+            sqrt_start = nums[start] ** 2
+            sqrt_end = nums[end] ** 2
+            if sqrt_start < sqrt_end:
+                ans.append(sqrt_end)
+                end -= 1
+            else:
+                ans.append(sqrt_start)
+                start += 1
+
+        if start == end:
+            ans.append(nums[start] ** 2) 
+            
+        ans.reverse()
+        return ans
+```
