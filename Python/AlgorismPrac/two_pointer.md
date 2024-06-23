@@ -457,3 +457,38 @@ class Solution:
         ans.reverse()
         return ans
 ```
+
+https://leetcode.com/problems/sort-array-by-parity-ii/description/
+
+짝수 리스트와 홀수 리스트 각각 만들고 나중에 정렬.
+짝, 홀 번갈아가며 넣으면 된다.
+
+148ms. Beats 70.43%
+19.30MB. Beats 7.50%
+
+단순한 방법. 배열을 3개 만들어서 그런지 공간복잡도가 크다. 
+
+O(n).
+
+```python
+class Solution:
+    def sortArrayByParityII(self, nums: List[int]) -> List[int]:
+        even_list = []
+        odd_list = []
+        ans = []
+        for num in nums:
+            if num % 2 == 0:
+                even_list.append(num)
+            else:
+                odd_list.append(num)
+        even_count = 0
+        odd_count = 0
+        for i in range(len(nums)):
+            if i % 2 == 0:
+                ans.append(even_list[even_count])
+                even_count += 1
+            else:
+                ans.append(odd_list[odd_count])
+                odd_count += 1
+        return ans
+```
