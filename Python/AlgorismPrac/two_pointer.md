@@ -282,7 +282,6 @@ class Solution:
         return -1
 ```
 
-"""
 https://leetcode.com/problems/intersection-of-two-arrays/description/
 
 중복된 값을 리스트로 만드는 문제. 우선 set을 만들어서 유니크한 집합을 만들자
@@ -293,13 +292,8 @@ https://leetcode.com/problems/intersection-of-two-arrays/description/
 16.59MB. Beats 95.53%
 
 O(n). 각 리스트를 한번씩 순회한다. set을 리스트로 바꾸는 것도 O(n).
-"""
 
-from collections import Counter
-from functools import reduce
-from operator import xor
-from typing import List, Optional
-
+```python
 class Solution:
     def intersection(self, nums1: List[int], nums2: List[int]) -> List[int]:
         ans = set()
@@ -312,6 +306,7 @@ class Solution:
                 ans.add(num_2)
         
         return list(ans)
+```
 
 https://leetcode.com/problems/remove-palindromic-subsequences/
 
