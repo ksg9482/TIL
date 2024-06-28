@@ -202,3 +202,80 @@ class Solution:
         return ans
 ```
 ---
+
+https://leetcode.com/problems/maximum-product-difference-between-two-pairs/description/
+
+두 페어 곱의 차를 극대화 하는 문제
+가장 큰 페어와 가장 작은 페어를 구한다 -> 정렬
+정렬하고 0,1,-1,-2로 구한다.
+
+큰 요소에 접근할 때 [-1]로 접근하는 것과 [nums_len - 1]로 접근하는 것이 시간차이가 있었다.
+[nums_len - 1]가 훨씬 빠르다. [-1]로 했을때 매직메서드로 처리하는 것은 [nums_len - 1]을 통해 접근하는 것과 같은 내부과정에 더해 + @ 가 있는걸까?
+
+135ms. Beats 75.62%
+
+17.99MB. Beats 32.25%
+
+O(nlogn).
+
+```python
+class Solution:
+    def maxProductDifference(self, nums: List[int]) -> int:
+        sorted_nums = sorted(nums)
+        nums_len = len(nums)
+        
+        smaller_pair = sorted_nums[0] * sorted_nums[1]
+        bigger_pair = sorted_nums[nums_len - 1] * sorted_nums[nums_len - 2]
+
+        return bigger_pair - smaller_pair
+```
+---
+
+https://leetcode.com/problems/maximum-product-of-two-elements-in-an-array/description/
+
+정렬하고 큰 요소 2개(요소 값에 -1 해서) 곱하는 문제
+
+어차피 2번만 할꺼면 바로 가져와서 하는게 빠르다
+
+44ms. Beats 91.84%
+
+16.42MB. Beats 96.39%
+
+O(nlogn).
+
+```python
+class Solution:
+    def maxProduct(self, nums: List[int]) -> int:
+        sorted_nums = sorted(nums)
+
+        num_1 = sorted_nums[-1]
+        num_2 = sorted_nums[-2]
+
+        return (num_1 - 1) * (num_2 - 1)
+```
+---
+
+https://leetcode.com/problems/height-checker/description/
+
+정렬하고 비교한다
+
+어차피 2번만 할꺼면 바로 가져와서 하는게 빠르다
+
+35ms. Beats 80.59%
+
+16.41MB. Beats 48.66%
+
+O(nlogn).
+
+```python
+class Solution:
+    def heightChecker(self, heights: List[int]) -> int:
+        sorted_heigths = sorted(heights)
+        count = 0
+        
+        for i, heigth in enumerate(heights):
+            if not sorted_heigths[i] == heigth:
+                count += 1
+        return count
+```
+---
