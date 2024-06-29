@@ -279,3 +279,110 @@ class Solution:
         return count
 ```
 ---
+https://leetcode.com/problems/relative-ranks
+
+스코어로 등수 찾는 문제 -> 금,은,동메달은 결국 등수 표현을 조금 바꾼 것일뿐
+정렬: 등수를 찾으려면 정렬한다. 각 값은 유니크하기 때문에 등수가 겹치지 않는다
+-> [점수, 점수] & 인덱스에 맞게 다시 반환해야 함.
+
+score: idx 사전에 넣기
+정렬하고 순회 -> 스코어 key로 찾으면 원래 인덱스 나옴. 
+등수는 enum 으로 나온다
+
+원본 리스트를 복사해서 내용만 교환하면 될거 같다
+
+60ms. Beats 79.84%
+
+17.76MB. Beats 51.58%
+
+O(nlogn)
+
+```python
+class Solution:
+    def findRelativeRanks(self, score: List[int]) -> List[str]:
+        score_to_idx_dict = {}
+        score_list_copy = copy(score)
+
+        for i, score_num in enumerate(score):
+            score_to_idx_dict[score_num] = i
+
+        sorted_score = sorted(score, reverse=True)
+
+        for i, sorted_score in enumerate(sorted_score):
+            idx = score_to_idx_dict.get(sorted_score)
+            if i == 0:
+                score_list_copy[idx] = "Gold Medal"
+            elif i == 1:
+                score_list_copy[idx] = "Silver Medal"
+            elif i == 2:
+                score_list_copy[idx] = "Bronze Medal"
+            else:
+                score_list_copy[idx] = str(i + 1) # 등수는 1등부터 시작
+
+        return score_list_copy
+```
+---
+
+https://leetcode.com/problems/make-two-arrays-equal-by-reversing-subarrays/description/
+
+부분배열을 뒤집어서 두 배열이 같은 값을 가질수 있는지 문제.
+어차피 두 배열이 같아지려면 요소의 각 개수가 같아야 하고, 서로에게 없는 요소를 가지면 안된다.
+
+순회중 일일이 확인하는 것보다 사전을 두개 만들어 프로세스가 끝나고 비교하는 게 더 나을것이라 판단했다.
+
+69ms. Beats 84.03%
+
+16.79MB. Beats 66.67%
+
+O(n)
+
+```python
+class Solution:
+    def canBeEqual(self, target: List[int], arr: List[int]) -> bool:
+        dict_1 = {}
+        dict_2 = {}
+        for num in target:
+            if not dict_1.get(num):
+                dict_1[num] = 1
+            else:
+                dict_1[num] += 1
+        
+        for num in arr:
+            if not dict_2.get(num):
+                dict_2[num] = 1
+            else:
+                dict_2[num] += 1
+        return dict_1 == dict_2
+```
+---
+
+https://leetcode.com/problems/sort-array-by-increasing-frequency/description/
+
+배열 요소의 빈도로 오름차순 1차 정렬.
+빈도가 같은 경우 해당 요소끼리 비교해서 내림차순 정렬
+
+1. 빈도와 함께 요소를 저장하는 사전. {요소: 빈도}.
+2. 각 요소의 빈도가 확보되면 정렬할 준비물은 완료. 다중조건으로 정렬.
+3. (요소, 빈도)로 묶어서 정렬 실시. 이때, 빈도가 첫번째, 요소가 두번째(내림차순).
+4. 정렬된 결과물에서 다시 요소 뽑아서 반환
+
+47ms. Beats 74.86%
+
+16.43MB. Beats 76.26%
+
+O(nlogn). 여기저기서 배열을 많이 만들지만 정렬 nlogn이 가장 크다
+
+```python
+class Solution:
+    def frequencySort(self, nums: List[int]) -> List[int]:
+        frequency_dict = {}
+        for num in nums:
+            if not frequency_dict.get(num):
+                frequency_dict[num] = 1
+            else:
+                frequency_dict[num] += 1
+        sorted_nums = sorted([(num, frequency_dict[num]) for num in nums], key=lambda x: (x[1], -x[0]))
+
+        return [num for num, _ in sorted_nums]
+```
+---
