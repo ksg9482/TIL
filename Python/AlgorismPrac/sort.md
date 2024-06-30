@@ -386,3 +386,23 @@ class Solution:
         return [num for num, _ in sorted_nums]
 ```
 ---
+
+https://leetcode.com/problems/neither-minimum-nor-maximum/description/
+
+정렬하고 [0], [-1]번째 요소 제외한 아무거나 반환. 
+만약 리스트의 길이가 2이하면 최소, 최대가 아니여야 한다는 조건을 만족할 수 없다. 따라서 바로 -1
+
+302ms. Beats 52.68%
+
+16.44MB. Beats 84.68%
+
+O(nlogn)
+
+```python
+class Solution:
+    def findNonMinOrMax(self, nums: List[int]) -> int:
+        if len(nums) <= 2:
+            return -1
+        sorted_nums = sorted(nums)
+        return sorted_nums[1]
+```
