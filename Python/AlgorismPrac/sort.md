@@ -406,3 +406,43 @@ class Solution:
         sorted_nums = sorted(nums)
         return sorted_nums[1]
 ```
+---
+https://leetcode.com/problems/longest-subsequence-with-limited-sum/description/
+
+미리 누적합 리스트를 만들어 이리스트를 기준으로 프로세스 실시
+정렬을 먼저하기 때문에 이진검색을 사용할 수 있다
+누적합이기 때문에 0번째 요소는 합으로 안들어간다 -> +1 해줘야 함
+
+검색해보니 누적합을 미리 만들어놓는 방식을 prefix sum이라고 한다
+
+94ms. Beats 63.42%
+
+16.84MB. Beats 67.37%
+
+O(nlogn)
+
+```python
+class Solution:
+    def answerQueries(self, nums: List[int], queries: List[int]) -> List[int]:
+        ans = [0]*len(queries)
+        sorted_nums = sorted(nums)
+        calc_list = copy(sorted_nums)
+        for i in range(1, len(sorted_nums)):
+            calc_list[i] += calc_list[i - 1]
+        
+        for i, query in enumerate(queries):
+            idx = -1
+            l = 0
+            r = len(calc_list) - 1
+            while l <= r:
+                mid = (l+r)//2
+                if calc_list[mid]<=query:
+                    idx = mid
+                    l = mid+1
+                else:
+                    r = mid-1
+
+            ans[i] = idx + 1
+        return ans
+```
+---
