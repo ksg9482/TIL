@@ -446,3 +446,26 @@ class Solution:
         return ans
 ```
 ---
+https://leetcode.com/problems/array-partition/description/
+
+둘씩 짝지은 페어중 작은 수만 더하는 문제
+
+-> 정렬하면 작은수를 별도로 구하지 않아도 됨.
+
+2씩 건너 뛰었을때 페어는 i, i+1이고 작은 수는 i가 된다.
+
+215ms. Beats 67.98%
+
+19.94MB. Beats 20.36%
+
+O(nlogn)
+
+```python
+class Solution:
+    def arrayPairSum(self, nums: List[int]) -> int:
+        sorted_nums = sorted(nums)
+        ans = 0
+        for i in range(0, len(sorted_nums), 2):
+            ans += sorted_nums[i]
+        return ans
+```
