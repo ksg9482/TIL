@@ -259,8 +259,6 @@ https://leetcode.com/problems/height-checker/description/
 
 정렬하고 비교한다
 
-어차피 2번만 할꺼면 바로 가져와서 하는게 빠르다
-
 35ms. Beats 80.59%
 
 16.41MB. Beats 48.66%
