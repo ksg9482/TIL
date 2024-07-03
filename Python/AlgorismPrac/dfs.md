@@ -12,6 +12,10 @@ low보다 낮으면 탐색 -> 재귀로 끝까지 찾는다
 
 high보다 높으면 탐색 -> 마찬가지
 
+102ms. Beats 89.22%
+
+23.61MB. Beats 28.85%
+
 ```python
 class Solution:
     def rangeSumBST(self, root: Optional[TreeNode], low: int, high: int) -> int:
