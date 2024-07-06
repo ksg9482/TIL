@@ -124,3 +124,97 @@ class Solution:
         return dfs(root1, root2)
 ```
 ---
+https://leetcode.com/problems/increasing-order-search-tree/description/
+
+val을 담은 리스트 -> 정렬 -> 순서대로 right에 담은 treenode 반환.
+어차피 새 treenode의 right에만 값 들어감. none까지 고려할 필요 없음
+
+21ms. Beats 99.65%
+
+16.63MB. Beats 20.76%
+
+O(nlogn)
+
+```python
+class Solution:
+    def increasingBST(self, root: TreeNode) -> TreeNode:
+
+        def dfs(root: Optional[TreeNode], val_list:List = []):
+            if not root:
+                return None
+            
+            dfs(root.left, val_list)
+            dfs(root.right, val_list)
+            val_list.append(root.val)
+            
+            return val_list
+
+        def list_to_tree(lst, index=0):
+            if index < len(lst):
+                node = TreeNode(lst[index])
+                node.right = list_to_tree(lst, index + 1)
+                return node
+        
+        val_list = dfs(root)
+        val_list.sort()
+        new_tree_node = list_to_tree(val_list)
+        return new_tree_node
+```
+---
+
+https://leetcode.com/problems/n-ary-tree-postorder-traversal/description/
+
+leaf부터 값 추출하는 문제.
+
+값 추출보다 재귀를 먼저 넣어서 leaf를 먼저 리스트에 넣는다.
+
+n-ary Tree 주의. 자식을 여러개 가질 수 있음 -> children을 순회하며 val를 뽑아내야 함
+
+45ms. Beats 64.48%
+
+18.32MB. Beats 10.75%
+
+O(n). 정점수가 관건.
+
+```python
+class Solution:
+    def postorder(self, root: 'Node') -> List[int]:
+        def dfs(root, val_list: List=[]):
+            if not root:
+                return None
+            for root_val in root.children:
+                dfs(root_val, val_list)
+            val_list.append(root.val)
+
+            return val_list
+        return dfs(root)
+```
+---
+
+https://leetcode.com/problems/invert-binary-tree/description/
+
+트리노드를 뒤집는 문제.
+
+순회하면서 left와 right를 반대로 삽입한다.
+
+-> 재귀로 바로바로 생성.
+
+34ms. Beats 68.00%
+
+16.44MB. Beats 60.01%
+
+O(n)
+
+```python
+class Solution:
+    def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        def dfs(root, invert_tree=None):
+            if not root:
+                return None
+            invert_tree = TreeNode(root.val)
+            invert_tree.left = dfs(root.right)
+            invert_tree.right = dfs(root.left)
+            return invert_tree
+        return dfs(root)
+```
+---
