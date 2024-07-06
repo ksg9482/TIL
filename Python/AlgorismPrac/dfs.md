@@ -218,3 +218,32 @@ class Solution:
         return dfs(root)
 ```
 ---
+https://leetcode.com/problems/binary-tree-inorder-traversal/description/
+
+중위순회 하는 문제.
+
+left -> root -> right 순으로 순회한다.
+
+리스트는 순회하면서 바로 삽입. 
+
+34ms. Beats 64.93%
+
+16.64MB. Beats 11.63%
+
+O(n)
+
+```python
+class Solution:
+    def inorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+        def dfs(root, val_list:List=[]):
+            if not root:
+                return None
+            
+            dfs(root.left, val_list)
+            val_list.append(root.val)
+            dfs(root.right, val_list)
+
+            return val_list
+        return dfs(root)
+```
+---
