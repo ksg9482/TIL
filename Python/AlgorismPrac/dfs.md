@@ -247,3 +247,118 @@ class Solution:
         return dfs(root)
 ```
 ---
+https://leetcode.com/problems/maximum-depth-of-binary-tree/description/
+
+가장 깊은 depth를 반환하는 문제. 
+
+val이 None일때 카운트를 반환하게 한다. 단, None까지 포함하면 안되니 -1.
+
+리스트에 넣고 최고값 구한다
+
+37ms. Beats 76.08%
+
+17.78MB. Beats 25.99%
+
+O(n)
+
+```python
+class Solution:
+    def maxDepth(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        
+        def dfs(root, count = None, num_list=[]):
+            if not count:
+                count = 1
+            else:
+                count += 1
+            if not root:
+                num_list.append(count - 1)
+                return count
+            
+            dfs(root.left, count, num_list)
+            dfs(root.right, count, num_list)
+            
+            return num_list
+        return max(dfs(root))
+```
+
+https://leetcode.com/problems/n-ary-tree-preorder-traversal/description/
+
+n-ary를 preorder하는 문제.
+
+root, left -> right dfs하듯 하면 된다. 단, left, right가 아니라 배열 children으로 처리한다.
+
+배열에 넣어서 반환한다.
+
+44
+ms
+Beats 68.30%
+
+18.22
+MB
+Beats 38.17%
+
+O(n)
+
+```python
+class Solution:
+    def preorder(self, root: 'Node') -> List[int]:
+        if not root:
+            return []
+        
+        def dfs(root, val_list=[]):
+            if not root:
+                return None
+            
+            val_list.append(root.val)
+
+            for children in root.children:
+                dfs(children, val_list)
+            
+            return val_list
+            
+        return dfs(root)
+```
+---
+https://leetcode.com/problems/sum-of-root-to-leaf-binary-numbers/description/
+
+이진트리를 순회하며 인진수로 계산하는 문제.
+
+각 root의 val을 문자열로 더하고 leaf에서 리스트에 넣는다
+
+리스트 값을 처리해서 반환
+
+37ms. Beats 65.02%
+
+16.84MB. Beats 6.32%
+
+O(n)
+```python
+class Solution:
+    def sumRootToLeaf(self, root: Optional[TreeNode]) -> int:
+        def dfs(root, digit=None, num_list=[]):
+            if not digit:
+                digit = ""
+
+            if not root:
+                return None
+            
+            digit += str(root.val)
+
+            dfs(root.left, digit, num_list)
+            dfs(root.right, digit, num_list)
+
+            if not root.left and not root.right:
+                num_list.append(digit)
+
+            return num_list
+        
+        sum_num = 0
+        ans = dfs(root)
+        for num in ans:
+            sum_num += int(num, 2)
+        
+        return sum_num
+```
+---
