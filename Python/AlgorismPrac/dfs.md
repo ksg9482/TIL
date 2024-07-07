@@ -362,3 +362,48 @@ class Solution:
         return sum_num
 ```
 ---
+
+https://leetcode.com/problems/average-of-levels-in-binary-tree/description/
+
+트리의 레벨별 평균을 구하는 문제
+
+레벨은 사전으로 관리하고, 재귀 한번 호출마다 인덱스+1 해서 레벨 구한다
+
+사전은 합산, 개수를 넣어놓고 결과 반환할때 평균구하기. 
+
+46ms. Beats 50.99%
+
+18.56MB. Beats 12.34%
+
+O(n)
+
+```python
+class Solution:
+    def averageOfLevels(self, root: Optional[TreeNode]) -> List[float]:
+        #level:sum, count
+        def dfs(root, level=None, level_to_val_dict={}):
+            if not root:
+                return None
+            
+            if not level:
+                level = 1
+            else:
+                level += 1
+
+            if not level_to_val_dict.get(level):
+                level_to_val_dict[level] = {"sum":root.val,"count":1}
+            else:
+                level_to_val_dict[level]['sum'] += root.val
+                level_to_val_dict[level]['count'] += 1
+
+            if root.left or root.right:
+                dfs(root.left, level, level_to_val_dict)
+                dfs(root.right, level, level_to_val_dict)
+            
+            return level_to_val_dict
+        
+        ans = dfs(root)
+        
+        return [float(ans[data]['sum'] / ans[data]['count']) for data in ans]
+```
+---
