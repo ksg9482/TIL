@@ -407,3 +407,107 @@ class Solution:
         return [float(ans[data]['sum'] / ans[data]['count']) for data in ans]
 ```
 ---
+
+https://leetcode.com/problems/maximum-depth-of-n-ary-tree/description/
+
+children 없으면 리프노드. 여기까지 카운트 한다.
+
+카운트를 배열에 넣고 -> 최대값 찾기
+
+44ms. Beats 52.15%
+
+18.14MB. Beats 7.92%
+
+```python
+class Solution:
+    def maxDepth(self, root: 'Node') -> int:
+        def dfs(root, count=None, max_list=[]):
+            if not root:
+                return None
+            
+            if not count:
+                count = 1
+            else:
+                count += 1
+
+            if not root.children:
+                max_list.append(count)
+            else:
+                for children in root.children:
+                    dfs(children, count, max_list)
+
+            return max_list
+        
+        if not root:
+            return 0  
+          
+        ans = dfs(root=root)
+        return max(ans)
+```
+---
+
+https://leetcode.com/problems/binary-tree-postorder-traversal/description/
+
+트리를 postorder로 순회하는 문제.
+
+부모 -> 자식으로 리스트에 삽입.
+
+32ms. Beats 75.81%
+
+16.46MB. Beats 49.49%
+
+```python
+class Solution:
+    def postorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+        def dfs(root, num_list=[]):
+            if not root:
+                return None
+
+            dfs(root.left, num_list)
+            dfs(root.right, num_list)
+
+            num_list.append(root.val)
+
+            return num_list
+        
+        if not root:
+            return []
+          
+        ans = dfs(root=root)
+        
+        return ans
+```
+---
+
+https://leetcode.com/problems/univalued-binary-tree/description/
+
+트리의 모든 값이 동일한지 문제
+
+루트를 기준으로 비교. 값이 다르면 False 반환.
+
+not으로 잡으면 0도 포함됨. 0이 아니라 None임을 명시해야 함
+
+27ms. Beats 95.51%
+
+16.66MB. Beats 15.69%
+
+```python
+class Solution:
+    def isUnivalTree(self, root: Optional[TreeNode]) -> bool:
+        def dfs(root, root_val=None):
+            if not root:
+                return True
+            
+            if root_val is None:
+                root_val = root.val
+
+            if not (root.val == root_val):
+                return False
+        
+            left_result = dfs(root.left, root_val)
+            right_result = dfs(root.right, root_val)
+
+            return left_result and right_result
+        
+        return dfs(root)
+```
