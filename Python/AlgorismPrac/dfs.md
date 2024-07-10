@@ -450,7 +450,7 @@ https://leetcode.com/problems/binary-tree-postorder-traversal/description/
 
 트리를 postorder로 순회하는 문제.
 
-부모 -> 자식으로 리스트에 삽입.
+자식 -> 부모로 리스트에 삽입. 자식끼리는 left -> right순
 
 32ms. Beats 75.81%
 
@@ -511,3 +511,35 @@ class Solution:
         
         return dfs(root)
 ```
+
+https://leetcode.com/problems/binary-tree-preorder-traversal/description/
+
+트리를 preorder로 순회하는 문제.
+
+부모 -> 자식으로 리스트에 삽입.
+
+30ms. Beats 86.50%
+
+16.50MB. Beats 11.41%
+
+```python
+class Solution:
+    def preorderTraversal(self, root: Optional[TreeNode]) -> List[int]:
+        def dfs(root, num_list=[]):
+            if not root:
+                return None
+
+            num_list.append(root.val)
+            dfs(root.left, num_list)
+            dfs(root.right, num_list)
+
+            return num_list
+        
+        if not root:
+            return []
+          
+        ans = dfs(root=root)
+        
+        return ans
+```
+---
