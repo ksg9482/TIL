@@ -543,3 +543,124 @@ class Solution:
         return ans
 ```
 ---
+https://leetcode.com/problems/leaf-similar-trees/description/
+
+두 트리의 리프노드가 같은지 확인하는 문제
+
+left, right 둘 다 없으면 리프노드 -> 이때만 배열에 넣는다.
+
+배열 2개로 비교한다
+
+* 같은 dfs함수로 했을때 기본값을 빈배열로 뒀을때 문제발생. 서로 다른 트리여도 dfs함수가 같으면 이미 기본값에 들어있음
+
+33ms. Beats 77.96%
+
+16.53MB. Beats 20.83%
+
+```python
+class Solution:
+    def leafSimilar(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> bool:
+
+        def dfs(root, num_list=None):
+            if num_list is None:
+                num_list = []
+
+            if root is None:
+                return None
+
+            dfs(root.left, num_list)
+            dfs(root.right, num_list)
+
+            if root.left is None and root.right is None:
+                num_list.append(root.val)
+                
+            return num_list
+        
+          
+        root_1_list = dfs(root=root1)
+        root_2_list = dfs(root=root2)
+        
+        return root_1_list == root_2_list
+```
+---
+
+https://leetcode.com/problems/binary-tree-paths/description/
+
+탐색 패스를 만드는 문제. val을 '->'로 잇는다
+
+배열과 다음 노드로 전달될 문자열이 필요
+
+넘어갈 때마다 문자열에 더하고 리프노드에서 배열에 넣는다
+
+35ms. Beats 70.11%
+
+16.56MB. Beats 25.13%
+
+```python
+class Solution:
+    def binaryTreePaths(self, root: Optional[TreeNode]) -> List[str]:
+
+        def dfs(root, path=None, num_list=None):
+            if path is None:
+                path = ""
+
+            if num_list is None:
+                num_list = []
+
+            if root is None:
+                return None
+
+            if root.left is None and root.right is None:
+                path += f"{root.val}"
+                num_list.append(path)
+            else:
+                path += f"{root.val}->"
+
+            dfs(root.left, path, num_list)
+            dfs(root.right, path, num_list)
+
+            return num_list
+        
+        return dfs(root=root)
+```
+---
+
+https://leetcode.com/problems/same-tree/description/
+
+두 트리를 비교하는 문제
+
+부모 -> 좌 -> 우로 배열에 넣으면서 순회.
+
+배열끼리 비교한다. 단, None이 포함되어야 순서를 알 수 있음. None이면 배열에 None을 넣는다
+
+리프 이후로 넘어가지 않도록 좌, 우 다 있을 때만 재귀
+
+26ms. Beats 96.38%
+
+16.54MB. Beats 28.36%
+
+```python
+class Solution:
+    def isSameTree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
+        def dfs(root, num_list=None):
+            if num_list is None:
+                num_list = []
+
+            if root is None:
+                num_list.append(None)
+                return None
+
+            num_list.append(root.val)
+
+            if root.left is not None or root.right is not None:
+                dfs(root.left, num_list)
+                dfs(root.right, num_list)
+                
+            return num_list
+        
+        p_list = dfs(root=p)
+        q_list = dfs(root=q)
+
+        return p_list == q_list
+```
+---
