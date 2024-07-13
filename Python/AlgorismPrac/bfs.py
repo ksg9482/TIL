@@ -54,3 +54,90 @@ class Solution:
         return 0
 ```
 ---
+https://leetcode.com/problems/find-a-corresponding-node-of-a-binary-tree-in-a-clone-of-that-tree/description/
+
+클론 노드 찾기를 bfs로 처리.
+
+dfs는 재귀로 left, right 호출해서 풀었지만 bfs로 할땐 queue에 넣어서 처리한다
+
+루트의 left, right가 먼저 큐에 들어가고 다음은 그 자식 트리 순으로 큐에 넣어진다.
+
+오리지널과 클론을 같은 타이밍에 넣어가며 순회하다가 조건 맞으면 클론을 반환.
+
+293ms. Beats 91.95%
+
+24.72MB. Beats 12.22%
+
+O(n).
+
+```python
+class Solution:
+    def getTargetCopy(self, original: TreeNode, cloned: TreeNode, target: TreeNode) -> TreeNode:
+
+        def bfs(original:TreeNode, cloned:TreeNode, target:TreeNode):
+            ori_queue = deque([original])
+            clone_queue = deque([cloned])
+
+            while ori_queue:
+                node = ori_queue.popleft()
+                clone_node = clone_queue.popleft()
+                if node:
+                    if node == target:
+                        return clone_node
+                
+                if node.left:
+                    ori_queue.append(node.left)
+                    clone_queue.append(clone_node.left)
+                if node.right:
+                    ori_queue.append(node.right)
+                    clone_queue.append(clone_node.right)
+        
+        return bfs(original, cloned, target)
+```
+---
+https://leetcode.com/problems/merge-two-binary-trees/description/
+
+두 트리 병합 문제
+
+bfs로 queue에 넣어서 처리
+
+트리 두 개 동시에 순회 -> 반환하는 root1에 기준 맞춤
+
+59ms. Beats 74.13%
+
+16.83MB. Beats 76.40%
+
+O(n).
+
+```python
+class Solution:
+    def mergeTrees(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> Optional[TreeNode]:
+
+        if not root1:
+            return root2
+        
+        def bfs(root1:TreeNode, root2:TreeNode):
+            queue = deque([(root1, root2)])
+
+            while queue:
+                t_1, t_2 = queue.popleft()
+
+                if not t_1 or not t_2: # left, right 있어야 동작. 다음거 반복 전에 미리 처리 
+                    continue
+
+                t_1.val += t_2.val
+
+                if not t_1.left: # 없으면 넣어야 함 -> None 가리켜서 그거 처리해야 함
+                    t_1.left = t_2.left
+                else:
+                    queue.append((t_1.left, t_2.left))
+
+                if not t_1.right: # 없으면 넣어야 함 -> None 가리켜서 그거 처리해야 함
+                    t_1.right = t_2.right
+                else:
+                    queue.append((t_1.right, t_2.right))
+
+            return root1
+                
+        return bfs(root1, root2)
+```
