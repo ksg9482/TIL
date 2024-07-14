@@ -141,3 +141,32 @@ class Solution:
                 
         return bfs(root1, root2)
 ```
+https://leetcode.com/problems/invert-binary-tree/description/
+
+트리를 뒤집는 문제
+
+bfs로 큐에 넣는 방식으로 처리
+
+작은 노드 자체는 left, right를 서로 교환하는 반복.
+
+35ms. Beats 58.67%
+
+16.57MB. Beats 14.84%
+
+O(n).
+
+```python
+class Solution:
+    def invertTree(self, root: Optional[TreeNode]) -> Optional[TreeNode]:
+        def bfs(root):
+            q = deque([root])
+            while q:
+                node = q.popleft()
+                if node:
+                    node.left, node.right = node.right, node.left
+                # 먼저 좌, 우 바꾸고 큐에 삽입. 작은 노드 자체는 좌우만 바꾸면 된다
+                    q.extend([node.left, node.right]) # extend로 좌우 한꺼번에 넣는게 편하다
+            return root
+        return bfs(root)
+```
+---
