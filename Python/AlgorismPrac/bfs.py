@@ -170,3 +170,80 @@ class Solution:
         return bfs(root)
 ```
 ---
+
+https://leetcode.com/problems/maximum-depth-of-binary-tree/description/
+
+트리의 깊이를 구하는 문제
+
+한 층의 노드끼리 구분하는게 관건
+
+한 층만 다루는 큐를 두어서 큐를 총 2개 사용한다
+
+33ms. Beats 91.66%
+
+17.57MB. Beats 65.70%
+
+O(n).
+
+```python
+class Solution:
+    def maxDepth(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        def bfs(root):
+            q = deque([[root]])
+            count = 0
+            while q:
+                node = q.popleft()
+                inner_queue = deque()
+                for i in node:
+                    if i.left:
+                        inner_queue.append(i.left)
+                    if i.right:
+                        inner_queue.append(i.right)
+                if inner_queue:
+                    q.append(inner_queue)
+                count += 1
+            return count
+        return bfs(root)
+```
+---
+
+https://leetcode.com/problems/average-of-levels-in-binary-tree/description/
+
+트리의 한 층 평균을 구하는 문제
+
+한 층의 노드끼리 구분하는게 관건
+
+층끼리 계산하고 결과에 넣는다
+
+41ms. Beats 79.59%
+
+18.52MB. Beats 12.53%
+
+O(n).
+
+```python
+class Solution:
+    def averageOfLevels(self, root: Optional[TreeNode]) -> List[float]:
+        
+        def bfs(root):
+            q = deque([[root]])
+            averages = [root.val]
+            while q:
+                node = q.popleft()
+                inner_queue = deque()
+                for i in node:
+                    if i.left:
+                        inner_queue.append(i.left)
+                    if i.right:
+                        inner_queue.append(i.right)
+                if inner_queue:
+                    q.append(inner_queue)
+                    list_len = len(inner_queue)
+                    avr = sum([node.val for node in inner_queue]) / list_len
+                    averages.append(avr)
+            return averages
+        return bfs(root)
+```
+---
