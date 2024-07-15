@@ -314,3 +314,34 @@ class Solution:
         return bfs(root)
 ```
 ---
+
+https://leetcode.com/problems/same-tree/description/
+
+같은 값, 같은 모양의 트리인지 확인하는 문제
+
+bfs로 순회하다 모양이나 값 다르면 바로 false 반환
+
+p, q 짝지어서 동시에 움직이게 한다
+
+34ms. Beats 65.72%
+
+16.50MB. Beats 77.27%
+
+```python
+class Solution:
+    def isSameTree(self, p: Optional[TreeNode], q: Optional[TreeNode]) -> bool:
+        def bfs(p, q):
+            queue = deque([[p, q]])
+            while queue:
+                node_p, node_q = queue.popleft()
+                if not node_p and not node_q:
+                    continue
+                # 둘중 하나 없거나, 서로 다름
+                if (not node_p or not node_q) or not (node_p.val == node_q.val):
+                    print((not node_p or not node_q), node_p.val, node_q.val)
+                    return False
+                queue.extend([(node_p.left, node_q.left), (node_p.right, node_q.right)])
+            return True
+        
+        return bfs(p, q)
+```
