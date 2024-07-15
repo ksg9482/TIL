@@ -247,3 +247,70 @@ class Solution:
         return bfs(root)
 ```
 ---
+https://leetcode.com/problems/maximum-depth-of-n-ary-tree/description/
+
+한 층을 구성하는 children 끼리 묶는다
+
+children이 몇이나 있는지 모르고, children의 children도 모른다
+
+-> 더이상 children 없을 때까지 bfs
+
+40ms. Beats 76.75%
+
+18.18MB. Beats 9.07%
+
+```python
+class Solution:
+    def maxDepth(self, root: 'Node') -> int:
+        if not root:
+            return 0
+        def bfs(root):
+            count = 1
+            queue = deque([[root]])
+            while queue:
+                inner_queue = deque()
+                node = queue.popleft()
+                for i in node:
+                    for child_node in i.children:
+                        inner_queue.append(child_node)
+                if inner_queue:
+                    queue.append(inner_queue)
+                    count += 1
+            return count
+        return bfs(root)
+```
+```
+
+https://leetcode.com/problems/univalued-binary-tree/description/
+
+root node를 기준으로 값 비교.
+
+bfs로 순회하다 값 다르면 바로 false 반환
+
+34ms. Beats 71.99%
+
+16.50MB. Beats 16.27%
+
+```python
+class Solution:
+    def isUnivalTree(self, root: Optional[TreeNode]) -> bool:
+        def bfs(root):
+            queue = deque([root])
+            root_val = root.val
+
+            while queue:
+                node = queue.popleft()
+                if not (root_val == node.val):
+                    return False
+                
+                if node.left is not None:
+                    queue.append(node.left)
+
+                if node.right is not None:
+                    queue.append(node.right)
+            
+            return True
+
+        return bfs(root)
+```
+---
