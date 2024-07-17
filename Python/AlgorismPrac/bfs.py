@@ -345,3 +345,131 @@ class Solution:
         
         return bfs(p, q)
 ```
+https://leetcode.com/problems/same-tree/description/
+
+시작점에서 네방향으로 bfs. 
+
+유효범위 확인이 먼저.
+
+조건이 맞으면 치환한다.
+
+64ms. Beats 75.09%
+
+16.56MB. Beats 85.73%
+
+O(n*m) x, y축 연관
+
+```python
+class Solution:
+    def floodFill(self, image: List[List[int]], sr: int, sc: int, color: int) -> List[List[int]]:
+        row, col = len(image), len(image[0])
+        start_color = image[sr][sc]
+        directions = ((0, 1), (1, 0), (0, -1), (-1, 0))
+        queue = deque([(sr, sc)])
+
+        while queue:
+            current_r, current_c = queue.popleft()
+
+            if current_r < 0 or current_c < 0 or current_r >= row or current_c >= col or image[current_r][current_c] == color  or image[current_r][current_c] != start_color:
+                continue
+            
+            image[current_r][current_c] = color
+            
+            for i in directions:
+                r, c = i
+                queue.append(((current_r + r), (current_c + c)))
+        
+        return image
+```
+---
+
+https://leetcode.com/problems/two-sum-iv-input-is-a-bst/description/
+
+두 요소를 더헤서 k를 만들수 있나 문제.
+
+bfs를 이용한다. k에서 순회요소의 값을 뺀다 -> 사전에 넣어서 이후 해당하는 요소가 있나 검색.
+
+값이 있으면 True 반환
+
+52ms. Beats 90.86%
+
+18.40MB. Beats 46.64%
+
+O(n).
+
+```python
+class Solution:
+    def findTarget(self, root: Optional[TreeNode], k: int) -> bool:
+            if root is None:
+                return False
+            
+            q = deque([root])
+            checked = defaultdict(bool)
+
+            while q:
+                node = q.popleft()
+                
+                if checked[node.val]:
+                    return True
+                
+                checked[k - node.val] = True
+                
+                if node.left is not None:
+                    q.append(node.left)
+
+                if node.right is not None:
+                    q.append(node.right)
+
+            return False
+```
+
+https://leetcode.com/problems/sum-of-left-leaves/description/
+
+좌측 리프노드의 값을 더하는 문제.
+
+맨 처음 root node는 구분해야 함. None이 왼쪽에 있으면 구분해야함. 
+
+좌, 우가 번갈아가며 나오는걸 체크해야함
+
+35ms. Beats 65.71%
+
+16.96MB. Beats 23.30%
+
+O(n).
+
+```python
+class Solution:
+    def sumOfLeftLeaves(self, root: Optional[TreeNode]) -> int:
+            if root.left is None and root.right is None:
+                return 0
+
+            q = deque([[root]])
+            left_sum = 0
+            
+            while q:
+                nodes = q.popleft()
+                inner_q = deque()
+                is_left = True
+
+                for i, node in enumerate(nodes):
+                    if node is None:
+                        is_left = False
+                        continue
+
+                    if i%2 == 0:
+                        is_left = True
+
+                    if is_left and (node.left is None and node.right is None):
+                        left_sum += node.val
+
+                    inner_q.append(node.left)
+                    inner_q.append(node.right)
+
+                    is_left = False
+
+                if inner_q:
+                    q.append(inner_q)
+
+            return left_sum
+```
+---
