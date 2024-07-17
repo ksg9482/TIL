@@ -473,3 +473,47 @@ class Solution:
             return left_sum
 ```
 ---
+
+https://leetcode.com/problems/minimum-distance-between-bst-nodes/description/
+
+두 노드 값의 차 중 가장 작은 값을 반환.
+
+정렬하고 그 중 n, n+1 인덱스끼리 계산.
+
+정렬 -> 이미 값 차이 작은 순으로 되어있음
+
+29ms. Beats 91.53%
+
+16.54MB. Beats 23.87%
+
+O(n).
+
+```python
+class Solution:
+    def minDiffInBST(self, root: Optional[TreeNode]) -> int:
+            if root is None:
+                return 0
+            
+            q = deque([root])
+            vals = deque()
+
+            while q:
+                node = q.popleft()
+
+                if node is None:
+                    continue
+                vals.append(node.val)
+
+                q.append(node.left)
+                q.append(node.right)
+
+            sorted_vals = sorted(vals)
+
+            min_diff = None
+            for i in range(1, len(sorted_vals)):
+                temp_diff = abs(sorted_vals[i] - sorted_vals[i-1])
+                if min_diff is None or temp_diff < min_diff:
+                    min_diff = temp_diff
+
+            return min_diff
+```
