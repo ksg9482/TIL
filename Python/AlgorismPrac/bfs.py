@@ -517,3 +517,97 @@ class Solution:
 
             return min_diff
 ```
+https://leetcode.com/problems/minimum-absolute-difference-in-bst/
+
+두 노드 값의 차 중 가장 작은 값을 반환. 단, 절대값으로.
+
+이전 문제와 동일한 것 같다. 이진 검색 트리라서 양의 정수만 나오도록 했는데 이미 달성한 상태이다.
+
+41ms. Beats 89.36%
+
+18.26MB. Beats 28.03%
+
+O(n).
+
+```python
+class Solution:
+    def getMinimumDifference(self, root: Optional[TreeNode]) -> int:
+            if root is None:
+                return 0
+            
+            q = deque([root])
+            vals = deque()
+
+            while q:
+                node = q.popleft()
+
+                if node is None:
+                    continue
+                vals.append(node.val)
+
+                q.append(node.left)
+                q.append(node.right)
+
+            sorted_vals = sorted(vals)
+
+            min_diff = None
+            for i in range(1, len(sorted_vals)):
+                temp_diff = abs(sorted_vals[i] - sorted_vals[i-1])
+                if min_diff is None or temp_diff < min_diff:
+                    min_diff = temp_diff
+
+            return min_diff
+```
+---
+
+https://leetcode.com/problems/symmetric-tree/description/
+
+bfs 큐를 2개 만든다.
+
+좌 -> 우, 우 -> 좌 큐를 만들고 root 노드에서 left, right를 넣는다.
+
+반대로 삽입된 두 val가 같다면 대칭. 아니면 False.
+
+None처리에서 애를 먹었다.
+
+31ms. Beats 90.01%
+
+16.48MB. Beats 80.83%
+
+O(n).
+
+```python
+class Solution:
+    def isSymmetric(self, root: Optional[TreeNode]) -> bool:
+        if root.left is None and root.right is None:
+            return True
+        
+        if root.left is None or root.right is None:
+            return False
+        
+        left_q = deque([root.left])
+        right_q = deque([root.right])
+
+        while left_q and right_q:
+            left_node = left_q.popleft()
+            right_node = right_q.popleft()
+            
+            if left_node is None and right_node is None:
+                continue
+
+            if (left_node is not None and right_node is None) or (left_node is None and right_node is not None):
+                return False
+
+            if not (left_node.val == right_node.val):
+                return False
+            
+            left_q.append(left_node.right)
+            left_q.append(left_node.left)
+
+            right_q.append(right_node.left)
+            right_q.append(right_node.right)
+
+
+        return True
+```
+---
