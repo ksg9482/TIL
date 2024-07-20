@@ -611,3 +611,101 @@ class Solution:
         return True
 ```
 ---
+https://leetcode.com/problems/cousins-in-binary-tree/description/
+
+사촌관계이고 같은 깊이에 있는 노드를 구하는 문제
+
+관건은 사촌관계(부모가 다름)를 식별하는 것
+
+부모가 누구인지 저장하는 것으로 처리
+
+객체로 한번에 묶을 수 있지만 단순하게 변수 선언이 좋을 것 같아 변수 사용했다
+
+32ms. Beats 81.16%
+
+16.54MB. Beats 40.00%
+
+O(n).
+
+```python
+class Solution:
+    def isCousins(self, root: Optional[TreeNode], x: int, y: int) -> bool:
+        q = deque([[(None, root)]])
+        depth_count = 1
+        x_depth = None
+        x_parent = None
+        y_depth = None
+        y_parent = None
+
+        while q:
+            inner_q = deque()
+            nodes = q.popleft()
+            for parent, node in nodes:
+                if node is None:
+                    continue
+                
+                if node.val == x:
+                    x_depth = depth_count
+                    x_parent = parent
+
+                if node.val == y:
+                    y_depth = depth_count
+                    y_parent = parent
+
+                if x_depth is not None and y_depth is not None:
+                    return (x_parent != y_parent) and (x_depth == y_depth)
+                
+                inner_q.append((node.val, node.left))
+
+                inner_q.append((node.val, node.right))
+
+            if inner_q:
+                q.append(inner_q)
+            depth_count += 1
+
+        return False
+```
+---
+
+https://leetcode.com/problems/find-if-path-exists-in-graph/description/
+
+노드에서 특정노드로 이동하는 패스가 있나 구하는 문제
+
+이웃을 큐에 넣어가며 길 찾는다
+
+이미 방문한 곳은 visited 처리
+
+계속 찾는거라 사실상 부르트 포스?
+
+2531ms Beats 76.04%
+
+108.84MB Beats 55.60%
+
+O(n).
+
+```python
+class Solution:
+    def validPath(self, n: int, edges: List[List[int]], source: int, destination: int) -> bool:
+        
+        graph = defaultdict(list)
+        # 연관배열에 넣기
+        for i, j in edges:
+            graph[i].append(j)
+            graph[j].append(i)
+
+        q = deque([source])
+        visited = set([source])
+
+        while q:
+            node = q.popleft()
+            if node == destination:
+                return True
+            
+            for conn_node in graph[node]:
+                if conn_node not in visited:
+                    visited.add(conn_node)
+                    q.append(conn_node)
+            
+        return False
+```
+---
