@@ -709,3 +709,83 @@ class Solution:
         return False
 ```
 ---
+https://leetcode.com/problems/path-sum/description/
+
+path를 더해서 타겟을 만들수  있나.
+
+dfs가 적합할 거 같지만 bfs로 풀어보자.
+
+root부터 leave까지 한 세트. 중간에 짤린거로 하면 안된다
+
+좌, 우 노드가 다 없는 leave노드면 타겟과 비교
+
+이렇게 해도 해당 없으면 False.
+
+35ms. Beats 89.91%
+
+17.50MB. Beats 24.09%
+
+O(n).
+
+```python
+class Solution:
+    def hasPathSum(self, root: Optional[TreeNode], targetSum: int) -> bool:
+        if not root:
+            return False
+        q = deque([[root]])
+        while q:
+            nodes = q.popleft()
+            inner_q = deque()
+            for node in nodes:
+                if node.left is None and node.right is None:
+                    if node.val == targetSum:
+                        return True
+                if node.left:
+                    node.left.val += node.val
+                    inner_q.append(node.left)
+                if node.right:
+                    node.right.val += node.val
+                    inner_q.append(node.right)
+            if inner_q:
+                q.append(inner_q)
+        return False
+```
+---
+
+https://leetcode.com/problems/minimum-depth-of-binary-tree/description/
+
+갖은 낮은 깊이 찾기
+
+좌우 노드 없는 깊이에서 바로 반환
+
+196ms. Beats 98.76%
+
+43.21MB. Beats 45.44%
+
+O(n).
+
+```python
+class Solution:
+    def minDepth(self, root: Optional[TreeNode]) -> int:
+        depth_count = 1
+        if not root:
+            return 0
+        q = deque([[root]])
+        while q:
+            nodes = q.popleft()
+            inner_q = deque()
+            
+            for node in nodes:
+                if node.left is None and node.right is None:
+                    return depth_count
+                if node.left:
+                    inner_q.append(node.left)
+                if node.right:
+                    inner_q.append(node.right)
+            if inner_q:
+                depth_count += 1
+                q.append(inner_q)
+
+        return depth_count
+```
+---
