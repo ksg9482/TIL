@@ -223,3 +223,110 @@ class Solution:
         return count
 ```
 ---
+https://leetcode.com/problems/make-array-zero-by-subtracting-equal-amounts/description/
+
+배열의 0이 아닌 가장 작은 요소로 배열의 다른 요소를 뺀다
+
+반복해서 0으로 만든다
+
+정렬 -> 반복문의 현재 요소로 다른 요소 빼기
+
+현재 인덱스 이전 요소는 이미 연산 종료 -> 순회하는 요소가 점점 줄어든다
+
+38ms. Beats 61.56%
+
+16.43MB. Beats 65.53%
+
+O(nlogn). 정렬.
+
+```python
+class Solution:
+    def minimumOperations(self, nums: List[int]) -> int:
+        sorted_nums = sorted(nums)
+        nums_len = len(sorted_nums)
+        count = 0
+        for idx, num in enumerate(sorted_nums):
+            trigger = False
+            sum_num = num
+            for i in range(idx, nums_len):
+                if sorted_nums[i] == 0:
+                    continue
+                if sorted_nums[i] > 0:
+                    trigger = True
+                    sorted_nums[i] -= num
+                    sum_num += num
+
+            if trigger and sum_num:
+                count += 1
+
+        return count
+```
+---
+
+https://leetcode.com/problems/minimum-subsequence-in-non-increasing-order/description/
+
+가장 큰 부분배열 합 반환
+
+단, 부분배열의 요소 개수가 최소여야 함.
+
+만약 최대 부분 배열과 나머지의 합이 같으면 이때는 부분배열의 요소 개수가 최대여야 함
+
+정렬 -> 전체 합 미리 계산 & 큰 요소부터 합산. 전체합에선 그만큼 차감
+
+61ms. Beats 59.47%
+
+16.48MB. Beats 88.70%
+
+O(nlogn). 정렬.
+```python
+class Solution:
+    def minSubsequence(self, nums: List[int]) -> List[int]:
+        if len(nums) == 1:
+            return nums
+        
+        sorted_nums = sorted(nums, reverse=True)
+        origin_num_sum = sum(sorted_nums)
+        target_num_sum = sorted_nums[0]
+        ans = [sorted_nums[0]]
+
+        for num in sorted_nums[1::]:
+            if (origin_num_sum - target_num_sum) < target_num_sum:
+                return ans
+            target_num_sum += num
+            ans.append(num)
+
+        return ans
+```
+---
+
+https://leetcode.com/problems/split-with-minimum-sum/description/
+
+숫자를 둘로 나눠서 계산하는 문제
+
+문자열 수를 번갈아가며 분할
+
+분할된 문자열을 숫자로 변환하여 계산
+
+27ms. Beats 93.02%
+
+16.61MB. Beats 7.69%
+
+O(nlogn). 정렬이 요구됨
+
+```python
+class Solution:
+    def splitNum(self, num: int) -> int:
+        num_list = [s_num for s_num in str(num)]
+        num_list.sort()
+        num_1 = ''
+        num_2 = ''
+
+        for idx, s_num in enumerate(num_list):
+            if idx % 2 == 0:
+                num_1 += s_num
+            else:
+                num_2 += s_num
+
+        return int(num_1) + int(num_2)
+```
+---
