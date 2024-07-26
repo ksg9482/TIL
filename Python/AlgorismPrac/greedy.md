@@ -330,3 +330,40 @@ class Solution:
         return int(num_1) + int(num_2)
 ```
 ---
+
+https://leetcode.com/problems/apple-redistribution-into-boxes/description/
+
+최소 몇개 박스가 필요한가?
+
+1,3,2 -> 4,3,1,5,2 일 경우 4,5 두개만 쓰면 됨. 즉 큰 용량부터 채워서 몇개 박스를 점유하는가 카운트
+
+정렬 -> 사과 총합보다 용량 총합이 많아질때까지 용량 더하기.
+
+몇번 더해야 하나 카운트
+
+42ms. Beats 69.37%
+
+16.44MB. Beats 63.67%
+
+O(nlogn). 정렬이 요구됨
+
+
+```python
+class Solution:
+    def minimumBoxes(self, apple: List[int], capacity: List[int]) -> int:
+        sorted_capacity = sorted(capacity, reverse=True)
+        apple_sum = sum(apple)
+        cap_sum = 0
+        count = 1
+
+        for cap_size in sorted_capacity:
+            cap_sum += cap_size
+
+            if apple_sum <= cap_sum:
+                return count
+
+            count += 1
+
+        return count
+```
+---
