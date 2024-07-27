@@ -367,3 +367,91 @@ class Solution:
         return count
 ```
 ---
+
+https://leetcode.com/problems/two-furthest-houses-with-different-colors/description/
+
+색깔별 첫등장, 가장 나중 등장 체크
+
+첫등장중 가장 작은거 나중 등장중 가장 큰거로 계산
+
+어차피 요소 적으니 반복문 2개로 비교해도 큰 문제 없을것이라 판단
+
+35ms. Beats 90.09%
+
+16.45MB. Beats 65.72%
+
+O(n^2). 2중 반복문 사용
+
+```python
+class Solution:
+    def maxDistance(self, colors: List[int]) -> int:
+        colors_map = defaultdict(int)
+        for idx, col in enumerate(colors):
+            if colors_map[col]:
+                colors_map[col][1] = idx
+            else:
+                colors_map[col] = [idx, idx]
+
+        max_diff = 0
+
+        for idx_1, key_1 in enumerate(colors_map):
+            colors_map[key_1]
+            for idx_2, key_2 in enumerate(colors_map):
+                if idx_1 == idx_2:
+                    continue
+
+                cur_diff = abs(colors_map[key_1][0] - colors_map[key_2][1])
+
+                if max_diff < cur_diff:
+                    max_diff = cur_diff
+        return max_diff
+```
+---
+
+https://leetcode.com/problems/minimum-number-of-operations-to-convert-time/description/
+
+시간 변환하는 문제. 02:30 -> 04:35로 바꿀때 몇번 연산이 들어가야 하느냐
+
+분으로 단위를 통일해서 계산한다
+
+60, 15, 5, 1로만 계산 가능 -> 큰거부터 계산 들어간다
+
+if문으로 분기해서 체크하는 걸 반복하면 될듯
+
+35ms. Beats 61.92%
+
+16.41MB. Beats 82.01%
+
+O(n). 
+
+```python
+class Solution:
+    def convertTime(self, current: str, correct: str) -> int:
+        num_current = 0
+        num_correct = 0
+        count = 0
+        
+        for idx, (cur, cor) in enumerate(zip(current.split(':'), correct.split(':'))):
+            if idx == 0:
+                num_current += (int(cur) * 60)
+                num_correct += (int(cor) * 60)
+            else:
+                num_current += int(cur)
+                num_correct += int(cor)
+
+        while num_current < num_correct:
+            count += 1
+            time_diff = num_correct - num_current
+
+            if time_diff >= 60:
+                num_current += 60
+            elif time_diff >= 15:
+                num_current += 15
+            elif time_diff >= 5:
+                num_current += 5
+            else:
+                num_current += 1
+
+        return count
+```
+---
