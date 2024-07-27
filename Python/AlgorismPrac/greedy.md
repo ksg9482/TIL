@@ -455,3 +455,76 @@ class Solution:
         return count
 ```
 ---
+
+https://leetcode.com/problems/minimum-cost-to-move-chips-to-the-same-position/description/
+
+짝 -> 짝, 홀 -> 홀은 코스트 없음.
+
+결국 짝, 홀로 다 모아두고 어느 한 쪽으로 병합해야함
+
+가장 작은 값을 찾아야 함 -> 더 작은 쪽이 움직여야 한다
+
+작은쪽의 개수를 반환한다
+
+32ms. Beats 86.23%
+
+16.58MB. Beats 41.92%
+
+O(n).
+
+```python
+class Solution:
+    def minCostToMoveChips(self, position: List[int]) -> int:
+        odd_count = 0
+        even_count = 0
+
+        for i in position:
+            if i % 2 == 0:
+                even_count += 1
+            else:
+                odd_count += 1
+        
+        return min(odd_count, even_count)
+```
+---
+
+https://leetcode.com/problems/minimum-number-of-pushes-to-type-word-i/description/
+
+각 문자를 숫자에 균등히 배분하는게 좋다 
+
+어차피 중복글자 없으니 8자리까진 +1, 그 다음 8자리 +2 방식으로 해도 되지 않을까?
+
+배열 8개 만들어 놓고 하나씩 삽입하면 될거 같다.
+
+각 배열의 요소로 합산하면 될듯?
+
+34ms. Beats 69.57%
+
+16.45MB. Beats 62.73%
+
+O(n).
+
+```python
+class Solution:
+    def minimumPushes(self, word: str) -> int:
+        pad_num = 8
+        pads = [[] for _ in range(8)]
+        pad_idx = 0
+        for idx, chr in enumerate(word):
+            if idx % pad_num == 0:
+                pad_idx = 0
+            
+            pads[pad_idx].append(chr)
+            pad_idx += 1
+
+        count = 0
+        for pad in pads:
+            add_num = 0
+            # 리스트에 넣으면 요소가 합산되서 총 몇번 눌러야 하는지 모름
+            # 배열 요소가 2라면 1+2 해서 처음 8번은 +1, 다음 8번은 +2로 합쳐줘야 함
+            for i in range(len(pad)):
+                add_num += (i + 1)
+            count += add_num
+        return count
+```
+---
