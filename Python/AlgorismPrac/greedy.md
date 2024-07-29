@@ -528,3 +528,85 @@ class Solution:
         return count
 ```
 ---
+
+https://leetcode.com/problems/largest-odd-number-in-string/description/
+
+홀수인 하위 문자열을 반환하는 문제
+
+하위 문자열을 만드는 것과 1자리 수로 홀수를 판단하는 것이 중요
+
+36ms. Beats 98.11%
+
+17.81MB. Beats 21.73%
+
+O(n)
+
+```python
+class Solution:
+    def largestOddNumber(self, num: str) -> str:
+        # 홀짝 구분은 1자리수만 보면 됨. 
+
+        for i in range(len(num) - 1, -1 ,-1):
+            if not int(num[i]) % 2 == 0:
+                return num[:i + 1]
+        
+        return ""
+```
+---
+
+https://leetcode.com/problems/k-items-with-the-maximum-sum/description/
+
+생성된 리스트의 합을 구하는 문제
+
+그냥 순서대로 생성하고 집계하면 될거 같은데?
+
+31ms. Beats 91.00%
+
+16.57MB. Beats 27.43%
+
+O(n)
+
+```python
+class Solution:
+    def kItemsWithMaximumSum(self, numOnes: int, numZeros: int, numNegOnes: int, k: int) -> int:
+        num_list = []
+        for i in range(numOnes):
+            num_list.append(1)
+        for i in range(numZeros):
+            num_list.append(0)
+        for i in range(numNegOnes):
+            num_list.append(-1)
+        return sum(num_list[0:k])
+```
+---
+
+https://leetcode.com/problems/k-items-with-the-maximum-sum/description/
+
+2개씩 집계 -> 세번째는 제거
+
+정렬하면 큰거부터 합치니 작은거 제거 가능
+
+36ms. Beats 96.30%
+
+16.49MB. Beats 69.26%
+
+O(nlogn)
+
+```python
+class Solution:
+    def minimumCost(self, cost: List[int]) -> int:
+        sorted_cost = sorted(cost, reverse=True)
+
+        count = 0
+        num_list = []
+        for cost in sorted_cost:
+            if len(num_list) < 2: 
+                num_list.append(cost)
+            else:
+                num_sum = sum(num_list)
+                count += num_sum
+                num_list = []
+
+        return count + sum(num_list)
+```
+---
