@@ -610,3 +610,65 @@ class Solution:
         return count + sum(num_list)
 ```
 ---
+https://leetcode.com/problems/maximum-difference-by-remapping-a-digit/description/
+
+숫자를 1번 바꿀때 각각 최고, 최소 값을 구해 계산.
+
+큰거 -> 앞을 9로 바꾸면 된다
+
+작은거 -> 앞을 0으로 바꾸면 된다. 어차피 숫자 앞에 0 포함이면 자리수 작아진다
+
+최대한 앞 자리를 0으로 바꾸면 된다는 뜻.
+
+33ms. Beats 72.48%
+
+16.41MB. Beats 56.59%
+
+O(n)
+
+```python
+class Solution:
+    def minMaxDifference(self, num: int) -> int:
+        str_num = str(num)
+        max_change_num = num
+        min_change_num = 0
+
+        for idx, num_chr in enumerate(str_num):
+            if int(num_chr) < 9:
+                max_change_num = str_num.replace(str_num[idx], "9")
+                break
+
+        for idx, num_chr in enumerate(str_num):
+            if int(num_chr) > 0:
+                min_change_num = str_num.replace(str_num[idx], "0")
+                break
+
+        return int(max_change_num) - int(min_change_num)
+```
+---
+
+https://leetcode.com/problems/longest-unequal-adjacent-groups-subsequence-i/description/
+
+가장 긴 부분배열 반환하는 문제.
+
+요소별 순회하면서 그룹비교
+
+다른거만 모으기
+
+56ms. Beats 72.80%
+
+16.52MB. Beats 39.08%
+
+O(n)
+
+```python
+class Solution:
+    def getLongestSubsequence(self, words: List[str], groups: List[int]) -> List[str]:
+        ans = []
+        cur_group = None
+        for word, group in zip(words, groups):
+            if not group == cur_group:
+                ans.append(word)
+                cur_group = group
+        return ans
+```
