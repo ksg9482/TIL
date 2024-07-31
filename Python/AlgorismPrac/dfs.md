@@ -664,3 +664,39 @@ class Solution:
         return p_list == q_list
 ```
 ---
+
+https://leetcode.com/problems/binary-tree-tilt/description/
+
+leaf노드 부터 감산해서 올라간다
+
+바로 위 부모 노드는 좌, 우를 합쳐서 다시 반환
+
+그 결과 값은 배열에 넣는 방식을 반복
+
+연산이 끝난 리스트를 sum
+
+49ms. Beats 52.44%
+
+17.78MB. Beats 10.89%
+
+```python
+class Solution:
+    def findTilt(self, root: Optional[TreeNode]) -> int:
+        num_list = []
+        def dfs(node):
+            nonlocal num_list
+            if node is None:
+                return 0
+            
+            left = dfs(node.left)
+            right = dfs(node.right)
+
+            num_calc = abs(left - right)
+            num_list.append(num_calc)
+            
+            # 자식 노드의 값 합산과 val을 더해서 가져와야 함
+            return node.val + left + right
+
+        dfs(root)
+        return sum(num_list)
+```
