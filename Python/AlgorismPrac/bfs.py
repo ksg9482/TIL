@@ -789,3 +789,38 @@ class Solution:
         return depth_count
 ```
 ---
+https://leetcode.com/problems/deepest-leaves-sum/description/
+
+가장 깊은 leaf만 더하는 문제
+
+한 층마다 따로 관리
+
+다음 층이 없으면 가장 깊은 leaf. 임시 리스트에 val을 미리 넣어두었다가 해당하면 합산
+
+101ms. Beats 91.27%
+
+19.46MB. Beats 18.13%
+
+O(n)
+
+```python
+class Solution:
+    def deepestLeavesSum(self, root: Optional[TreeNode]) -> int:
+        q = deque([[root]])
+        count = 0
+        while q:
+            count += 1
+            nodes = q.popleft()
+            temp_list = []
+            ans_list = []
+            for node in nodes:
+                ans_list.append(node.val)
+                if node.left is not None:
+                    temp_list.append(node.left)
+                if node.right is not None:
+                    temp_list.append(node.right)
+            if temp_list:
+                q.append(temp_list)
+            else:
+                return sum(ans_list)
+```
