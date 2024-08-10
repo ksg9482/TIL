@@ -190,3 +190,75 @@ class Solution:
         return score
 ```
 ---
+
+https://leetcode.com/problems/take-gifts-from-the-richest-pile/description/
+
+선물리스트의 k번째 까지의 아이템을 제곱근으로 바꾸는 합산하는 문제
+
+최대를 구하는 건 최대힙 이용
+
+제곱근 구해서 최대힙에 넣어 비교.
+
+기존 최대가 아니라 제곱근 처리한 값도 넣어서 같이 비교해야 함
+
+44ms. Beats 87.53%
+
+16.78MB. Beats 28.38%
+
+O(nlogn)
+
+```python
+class Solution:
+    def pickGifts(self, gifts: List[int], k: int) -> int:
+        max_heap = []
+        for gift in gifts:
+            heapq.heappush(max_heap, -gift)
+
+        for _ in range(k):
+            heap_item = heapq.heappop(max_heap)
+            heapq.heappush(max_heap, -int(math.sqrt(-heap_item)))
+
+        return -sum(max_heap)
+```
+---
+
+https://leetcode.com/problems/last-stone-weight/description/
+
+돌 하나만 남기고 제거하는 문제
+
+최대힙으로 2개씩 고른다
+
+i, j 비교해서 다르면 i - j, 같으면 둘다 제거
+
+22ms. Beats 99.53%
+
+16.43MB. Beats 70.48%
+
+O(nlogn)
+
+```python
+class Solution:
+    def lastStoneWeight(self, stones: List[int]) -> int:
+        max_heap = []
+        for stone in stones:
+            heapq.heappush(max_heap, -stone)
+
+        while len(max_heap) > 1:
+            
+            temp = []
+            for _ in range(2):
+                heap_item = -heapq.heappop(max_heap)
+                temp.append(heap_item)
+            diff = temp[0] - temp[1]
+
+            if diff == 0:
+                pass
+            else:
+                heapq.heappush(max_heap, -diff)
+        
+        if len(max_heap) == 0:
+            return 0
+        
+        return -max_heap[0]
+```
+---
