@@ -120,3 +120,73 @@ class Solution:
         return ans
 ```
 ---
+
+https://leetcode.com/problems/make-array-zero-by-subtracting-equal-amounts/
+
+리스트에서 최소값 찾기. 최소값과 동일한 값을 0으로 만들고 리스트가 0만 있을때까지 반복.
+
+총 반복이 몇번 필요한가.
+
+최소힙으로 찾으면서 카운트
+
+35ms. Beats 77.27%
+
+16.54MB. Beats 32.02%
+
+O(nlogn)
+
+```python
+class Solution:
+    def minimumOperations(self, nums: List[int]) -> int:
+        min_heap = []
+        ans = 0
+        for num in nums:
+            heapq.heappush(min_heap, num)
+
+        prev_num = 0
+        for _ in range(len(min_heap)):
+            heap_item = heapq.heappop(min_heap)
+            if heap_item == prev_num:
+                pass
+            else:
+                ans += 1
+                prev_num = heap_item
+
+        return ans
+```
+---
+
+https://leetcode.com/problems/relative-ranks/description/
+
+리스트에 스코어에 맞춰 금,은,동으로 바꾸는 문제
+
+최대힙에 스코어와 인덱스를 넣는다
+
+최대힙 3개로 인덱스에 맞춰 금,은,동으로 변환
+
+65ms. Beats 57.56%
+
+18.02MB. Beats 10.62%
+
+O(nlogn)
+
+```python
+class Solution:
+    def findRelativeRanks(self, score: List[int]) -> List[str]:
+        max_heap = []
+        for idx, item in enumerate(score):
+            heapq.heappush(max_heap, (-item, idx))
+        
+        medal_list = [
+            "Gold Medal",
+            "Silver Medal",
+            "Bronze Medal"
+        ]
+        for i in range(len(score)):
+            heap_item = heapq.heappop(max_heap)
+            grade = medal_list[i] if len(medal_list) > i else str(i + 1) # 1등부터 시작
+            score[heap_item[1]] = grade
+
+        return score
+```
+---
