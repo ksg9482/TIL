@@ -262,3 +262,47 @@ class Solution:
         return -max_heap[0]
 ```
 ---
+https://leetcode.com/problems/largest-number-after-digit-swaps-by-parity/description/
+
+홀수면 홀수끼리 짝수면 짝수끼리 스왑해서 가장 큰 수 만드는 문제
+
+최대힙으로 가장 큰 수와 인덱스의 가장 앞 부터 교환.
+
+어차피 가장 큰 수끼리 앞에 있으면 큰 수 된다.
+
+서로 교환하는데 인덱스도 같이 연동해서 최신화 하는게 관건 
+
+29ms. Beats 88.68%
+
+16.64MB. Beats 15.66%
+
+O(nlogn)
+
+
+```python
+class Solution:
+    def largestInteger(self, num: int) -> int:
+        num_list = [int(num) for num in str(num)]
+        max_heap = []
+        for idx, item in enumerate(num_list):
+            heapq.heappush(max_heap, [-item, idx])
+
+        for _ in num_list:
+            heap_item = heapq.heappop(max_heap)
+            max_heap_item = -heap_item[0]
+            heap_idx = heap_item[1]
+
+            for i in range(heap_idx + 1):
+                if not (num_list[i] % 2) == (max_heap_item % 2):
+                    continue
+
+                if num_list[i] < max_heap_item:
+                    find_heap_idx = max_heap.index([-num_list[i], i])
+                    max_heap[find_heap_idx][1] = heap_idx
+                    num_list[i], num_list[heap_idx] = num_list[heap_idx], num_list[i]
+                    break
+
+        result = "".join([str(num) for num in num_list])
+        return int(result)
+```
+---
