@@ -581,3 +581,26 @@ class Solution:
         return (a + b + c)//2 
 ```
 ---
+https://leetcode.com/problems/kth-largest-element-in-an-array/description/
+
+k번째로 큰 수 구하는 문제.
+
+이번엔 중복이 있음. 중복을 처리하면서 이전 방식과 비슷하게 가져가면 됨
+
+482ms. Beats 47.26%
+
+29.69MB. Beats 54.57%
+
+O(nlogn)
+
+```python
+class Solution:
+    def findKthLargest(self, nums: List[int], k: int) -> int:
+        minHeap = []
+        for x in nums:
+            heapq.heappush(minHeap, x)
+            if len(minHeap) > k:
+                heapq.heappop(minHeap)
+        return minHeap[0]
+```
+---
