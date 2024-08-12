@@ -454,3 +454,109 @@ class Solution:
         return ans
 ```
 ---
+
+https://leetcode.com/problems/seat-reservation-manager/description/
+
+자리 예약하는 문제
+
+가장 작은 번호 -> 최소힙 이용.
+
+최소힙으로 관리한다
+
+43ms. Beats 76.34%
+
+17.78MB. Beats 74.82%
+
+O(logn)
+
+```python
+class SeatManager:
+
+    def __init__(self, n: int):
+        self.last = 0
+        self.pq = []
+
+    def reserve(self) -> int:
+        # 어차피 힙에 없으면 last에서 1더하는 것 밖에 없음
+        if not self.pq:
+            self.last += 1
+            return self.last
+        return heapq.heappop(self.pq)
+
+    def unreserve(self, seatNumber: int) -> None:
+        # last랑 다르면 삽입. 같으면 어차피 last로 관리되는 중이니 바로 처리.
+        if seatNumber == self.last:
+            self.last -= 1
+        else:
+            heapq.heappush(self.pq, seatNumber)
+```
+---
+
+https://leetcode.com/problems/maximum-total-importance-of-roads/description/
+
+총 중요도 구하는 문제
+
+중요도 최대힙에 넣어두고 처리한다
+
+총 중요도에 더하면서 끝나면 반환
+
+1224ms. Beats 48.41%
+
+42.66MB. Beats 26.10%
+
+O(logn)
+
+```python
+class Solution:
+    def maximumImportance(self, n: int, roads: List[List[int]]) -> int:
+        degree = defaultdict(int)
+        for n1, n2 in roads:
+            degree[n1] += 1
+            degree[n2] += 1
+
+        max_heap = [-d for d in degree.values()]
+        heapq.heapify(max_heap)
+
+        total_imp = 0
+        next_num = n
+
+        while max_heap:
+            deg = -heapq.heappop(max_heap)
+            total_imp += (deg * next_num)
+            next_num -= 1
+
+        return total_imp
+```
+---
+https://leetcode.com/problems/k-th-smallest-prime-fraction/description/
+
+k번째 요소로 분수 만드는 문제.
+
+k번째 다루는 요령은 비슷하나 분수 처리가 관건
+
+604ms. Beats 59.38%
+
+16.74MB. Beats 82.74%
+
+O(logn)
+
+```python
+class Solution:
+    def kthSmallestPrimeFraction(self, arr, k):
+        minHeap = []
+        arr_len = len(arr)
+        for i in range(arr_len - 1):
+            heapq.heappush(minHeap, (arr[i] / arr[-1], i, arr_len - 1))
+
+        for _ in range(k - 1):
+            _, numeratorIndex, denominatorIndex = heapq.heappop(minHeap)
+
+            if denominatorIndex - 1 > numeratorIndex:
+                heapq.heappush(
+                    minHeap, (arr[numeratorIndex] / arr[denominatorIndex - 1], numeratorIndex, denominatorIndex - 1))
+
+        _, i, j = heapq.heappop(minHeap)
+        return [arr[i], arr[j]]
+```
+---
+
