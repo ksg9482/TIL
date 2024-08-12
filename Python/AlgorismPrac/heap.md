@@ -306,3 +306,151 @@ class Solution:
         return int(result)
 ```
 ---
+https://leetcode.com/problems/kth-largest-element-in-a-stream/description/
+
+k번째로 큰 요소를 반환하는 문제. 단, 스트리밍으로 들어오니 보존되어야 함.
+
+힙정렬 하고 k개 남을 때까지 다 제거하면 k번째 나온다. 
+
+이후 add할 때마다 작은거 제거하면 항상 k번째 큰 요소가 앞에 있음
+
+80ms. Beats 53.53%
+
+20.94MB. Beats 28.69%
+
+O(nlogn)
+
+
+```python
+class KthLargest:
+
+    def __init__(self, k: int, nums: List[int]):
+        self.k = k
+        self.nums = nums
+        heapq.heapify(self.nums)
+
+        while len(self.nums) > self.k:
+            heapq.heappop(self.nums)
+       
+    def add(self, val: int) -> int:
+        heapq.heappush(self.nums, val)
+
+        while len(self.nums) > self.k:
+            heapq.heappop(self.nums)
+
+        # 계속 k번째를 유지해야 하니 pop안씀
+        return self.nums[0]
+```
+---
+
+https://leetcode.com/problems/minimum-amount-of-time-to-fill-cups/description/
+
+2개식 채우는 방식으로 몇 번 반복해야 0배열 되는지 문제
+
+가장 많은 것부터 -> 최대힙 이용. 어차피 최대힙은 -를 이용하니 0으로 만들면 된다
+
+30ms. Beats 92.27%
+
+16.40MB. Beats 94.06%
+
+O(nlogn)
+
+```python
+class Solution:
+    def fillCups(self, amount: List[int]) -> int:
+        max_heap = []
+        for num in amount:
+            heapq.heappush(max_heap, -num)
+
+        count = 0
+
+        while True:
+            first = heapq.heappop(max_heap)
+            second = heapq.heappop(max_heap)
+
+            # 어차피 first없으면 second도 없음.
+            if not first:
+                break
+
+            # max_heap -> +1하다보면 0됨
+            if first:
+                heapq.heappush(max_heap, first+1)
+            else:
+                heapq.heappush(max_heap, first)
+
+            if second:
+                heapq.heappush(max_heap, second+1)
+            else:
+                heapq.heappush(max_heap, second)
+
+            count += 1
+
+        return count
+```
+---
+
+https://leetcode.com/problems/find-subsequence-of-length-k-with-the-largest-sum/description/
+
+k개 큰 수 리스트 반환하는 문제.
+
+단, 기존 리스트의 인덱스를 준수해야 한다. 
+
+맥스힙 만들 때 인덱스도 같이 넣어서 답 리턴할 때 그 인덱스로 원본 순서 맞춘다
+
+53ms. Beats 64.41%
+
+16.83MB. Beats 38.40%
+
+O(nlogn)
+
+```python
+class Solution:
+    def maxSubsequence(self, nums: List[int], k: int) -> List[int]:
+        max_heap = [(-num, idx) for idx, num in enumerate(nums)]
+        idx_list = []
+        heapq.heapify(max_heap)
+        
+        for _ in range(k):
+            heap_item = heapq.heappop(max_heap)
+            idx_list.append(heap_item[1])
+
+        idx_list.sort()
+
+        return [nums[i] for i in idx_list]
+```
+---
+
+https://leetcode.com/problems/sort-characters-by-frequency/description/
+
+문자 등장 횟수로 정렬하는 문제
+
+사전에 {문자: 수}로 기재, 순회 후 배열화.
+
+최대힙으로 꺼내서 답 합성
+
+43ms. Beats 76.34%
+
+17.78MB. Beats 74.82%
+
+O(nlogn)
+
+```python
+class Solution:
+    def frequencySort(self, s: str) -> str:
+        str_to_idx_dict = defaultdict(int)
+        max_heap = []
+        ans = ""
+
+        for chr in s:
+            str_to_idx_dict[chr] += 1
+        
+        for key in str_to_idx_dict:
+            heapq.heappush(max_heap, (-str_to_idx_dict[key], key))
+
+        for _ in range(len(max_heap)):
+            heap_item = heapq.heappop(max_heap)
+            ans += (-heap_item[0] * heap_item[1])
+        
+        return ans
+```
+---
