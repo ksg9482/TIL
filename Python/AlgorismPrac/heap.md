@@ -559,4 +559,25 @@ class Solution:
         return [arr[i], arr[j]]
 ```
 ---
+https://leetcode.com/problems/k-th-smallest-prime-fraction/description/
 
+힙 문제라 힙으로 풀면 도저히 속도가 안나옴.
+
+합산 최고점수 구하는 문제 
+
+38ms. Beats 77.97%
+
+16.51MB. Beats 34.41%
+
+O(nlogn)
+
+```python
+class Solution:
+    def maximumScore(self, a: int, b: int, c: int) -> int:
+        a, b, c = sorted((a, b, c))
+        if a + b < c: 
+            return a + b
+        
+        return (a + b + c)//2 
+```
+---
