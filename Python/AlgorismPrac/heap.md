@@ -604,3 +604,69 @@ class Solution:
         return minHeap[0]
 ```
 ---
+https://leetcode.com/problems/smallest-number-in-infinite-set/description/
+
+무한으로 취급되는 배열에서 가장 작은 요소 다루는 문제
+
+현재 가리키는게 뭔지 보는게 관건
+
+90ms. Beats 77.63%
+
+17.16MB. Beats 74.53%
+
+O(logn)
+
+```python
+class SmallestInfiniteSet:
+
+    def __init__(self):
+        self.min_num = 1
+        self.heap = []
+        self.heap_set = set()  # 중복 방지
+
+    def popSmallest(self) -> int:
+        if self.heap:
+            num = heapq.heappop(self.heap)
+            self.heap_set.remove(num)
+            return num
+        self.min_num += 1
+        return self.min_num - 1
+
+    def addBack(self, num: int) -> None:
+        if self.min_num > num and num not in self.heap_set:
+            heapq.heappush(self.heap, num)
+            self.heap_set.add(num)
+```
+---
+
+https://leetcode.com/problems/k-closest-points-to-origin/description/
+
+좌표 구하는 문제.
+
+좌표를 최대힙으로 다룬다.
+
+587ms. Beats 72.90%
+
+23.33MB. Beats 6.02%
+
+O(logn)
+
+```python
+class Solution:
+    def kClosest(self, points: List[List[int]], k: int) -> List[List[int]]:
+        result = []
+        max_heap = []
+        
+        for x, y in points:
+            dist = -(x*x + y*y) 
+            if len(max_heap) < k:
+                heapq.heappush(max_heap, (dist, x, y))
+            else:
+                heapq.heappushpop(max_heap, (dist, x, y))
+        
+        while max_heap:
+            _, x, y = heapq.heappop(max_heap)
+            result.append([x, y])
+        
+        return result
+```
