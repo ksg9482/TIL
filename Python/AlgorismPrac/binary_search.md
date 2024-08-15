@@ -90,3 +90,83 @@ class Solution:
         return ans
 ```
 ---
+https://leetcode.com/problems/maximum-count-of-positive-integer-and-negative-integer/description/
+
+음수 개수, 양수 개수 중 최대 개수를 반환하는 문제
+
+음수 구하고 양수 구해서 max
+
+괜히 동시에 하려고 힘빼지 말고 따로 따로 해도 충분한 시간복잡도 나온다
+
+102ms. Beats 77.72%
+
+16.84MB. Beats 53.78%
+
+O(logn)
+
+```python
+class Solution:
+    def maximumCount(self, nums: List[int]) -> int:
+        start = 0
+        end = len(nums)
+        positive_count = 0
+        negative_count = 0
+
+        while start < end:
+            mid = start + (end - start) // 2
+            if nums[mid] > 0:
+                end = mid
+            else:
+                start = mid + 1
+        positive_count = start # start가 음수에 가있음
+
+        start = 0
+        end = len(nums)
+        while start < end:
+            mid = start + (end - start) // 2
+            if nums[mid] >= 0:
+                end = mid
+            else:
+                start = mid + 1
+        negative_count = start - 1
+
+        return  max(negative_count + 1, len(nums) - positive_count)
+```
+---
+
+https://leetcode.com/problems/find-the-distance-value-between-two-arrays/description/
+
+거리값 구하는 문제
+
+절대값 구해서 d보다 크면 거리값 증가
+
+arr1 요소가 arr2 요소보다 모두 d 이상으로 크면 카운트
+
+69ms. Beats 80.30%
+
+16.49MB. Beats 98.80%
+
+O(logn)
+
+```python
+class Solution:
+    def findTheDistanceValue(self, arr1: List[int], arr2: List[int], d: int) -> int:
+        arr2.sort()
+        res = 0
+        for num in arr1:
+            left = 0
+            right = len(arr2) - 1
+            while left <= right:
+                mid = (left + right) // 2
+                if abs(num - arr2[mid]) <= d:
+                    break
+                elif num < arr2[mid]:
+                    right = mid - 1
+                else:
+                    left = mid + 1
+            else:  # break면 동작 안함
+                res += 1
+                
+        return res
+```
+---
