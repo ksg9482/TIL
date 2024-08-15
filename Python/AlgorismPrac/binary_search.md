@@ -170,3 +170,135 @@ class Solution:
         return res
 ```
 ---
+https://leetcode.com/problems/missing-number/description/
+
+누락된 숫자 구하는 문제
+
+0부터 n까지 리스트가 있다
+
+그중 숫자 1개가 누락되고, 그 누락된 수를 찾는다
+
+맞닺은 요소 2개를 뺐을 때 0보다 작으면 누락
+
+114ms. Beats 45.91%
+
+17.73MB. Beats 49.50%
+
+O(nlogn)
+
+```python
+class Solution:
+    def missingNumber(self, nums: List[int]) -> int:
+        nums.sort()
+        start = 0
+        end = len(nums) - 1
+
+        while start <= end:
+            mid = start + (end - start) // 2
+            # 오름차순 1씩 증가 -> 어긋나면 그게 없는거
+            if nums[mid] - (mid + 1) < 0:
+                start = mid + 1
+            else:
+                end = mid - 1
+        
+        return start
+```
+---
+
+https://leetcode.com/problems/count-pairs-whose-sum-is-less-than-target/description/
+
+두 요소 합산해서 타겟보다 작은 값으로 카운트 구하기
+
+타겟이 맞으면 left 상승. 아니면 right 다운
+
+48 ms. Beats 61.95%
+
+16.54 MB. Beats 31.11%
+
+O(nlogn)
+
+```python
+class Solution:
+    def countPairs(self, nums: List[int], target: int) -> int:
+        nums.sort()
+        count = 0
+        left = 0
+        right = len(nums) - 1
+        while left < right:
+            if nums[left] + nums[right] < target:
+                count += right - left
+                left += 1
+            else:
+                right -= 1
+        return count
+```
+---
+
+https://leetcode.com/problems/the-k-weakest-rows-in-a-matrix/description/
+
+1이 끝나는 부분까지 포인터 가져온다
+
+포인터가 1의 개수. 인덱스와 함께 리스트에 넣고 정렬.
+
+k만큼 뽑아낸다
+
+92ms. Beats 75.40%
+
+16.90MB. Beats 68.25%
+
+O(nlogn)
+
+```python
+class Solution:
+    def kWeakestRows(self, mat: List[List[int]], k: int) -> List[int]:
+        mat_list = []
+        for idx, inners in enumerate(mat):
+            start = 0
+            end = len(inners) - 1
+            while start <= end:
+                mid = start + (end - start) // 2
+                if inners[mid] == 1:
+                    start = mid + 1
+                else:
+                    end = mid - 1
+            mat_list.append((start, idx))
+        mat_list.sort()
+        return [mat_list[i][1] for i in range(k)]
+```
+---
+
+https://leetcode.com/problems/intersection-of-two-arrays/description/
+
+배열 2개 교집합 구하기. 단, 중복 없이
+
+배열 1개 기준으로 타겟 삼아서 이진 검색. 내용 있으면 set에 삽입
+
+set 반환
+
+44ms. Beats 78.86%
+
+16.74MB. Beats 23.94%
+
+O(nlogn)
+```python
+class Solution:
+    def intersection(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        ans = set()
+        nums2.sort()
+
+        for num_1 in nums1:
+            start = 0
+            end = len(nums2) - 1
+            while start <= end:
+                mid = start + (end - start) // 2
+                if nums2[mid] == num_1:
+                    ans.add(nums2[mid])
+                    break
+                elif nums2[mid] <= num_1:
+                    start = mid + 1
+                else:
+                    end = mid - 1
+                
+        return list(ans)
+```
+---
