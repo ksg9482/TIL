@@ -302,3 +302,80 @@ class Solution:
         return list(ans)
 ```
 ---
+https://leetcode.com/problems/count-complete-tree-nodes/description/
+
+노드가 전부 몇 개인지 세는 문제. 단 O(n)보다 빨라야 한다
+
+좌우 각각 계산한다.
+
+좌우가 같으면 서로 같은 뎁스라는 뜻.
+
+다르면 재귀로 계산
+
+39ms. Beats 99.48%
+
+21.56MB. Beats 95.78%
+
+O(logn)
+
+```python
+class Solution:
+    def countNodes(self, root: Optional[TreeNode]) -> int:
+        if not root:
+            return 0
+        
+        l_count = 0
+        left = root.left
+        while left:
+            l_count += 1
+            left = left.left
+
+        r_count = 0
+        right = root.right
+        while right:
+            r_count += 1
+            right = right.right
+
+        if l_count == r_count:
+            return 2**(l_count + 1) - 1
+        else:
+            return 1 + self.countNodes(root.left) + self.countNodes(root.right)
+```
+---
+
+https://leetcode.com/problems/special-array-with-x-elements-greater-than-or-equal-x/description/
+
+x찾는 문제
+
+x가 2이면 리스트에 2보다 크거나 같은 수가 2개 있어야 한다
+
+이진검색으로 타겟보다 작은수 인덱스 찾기. len - 인덱스 하면 몇개인지 나옴
+
+크거나 같으면 start로 옮김. 가장 앞으로 가야한다.
+
+35ms. Beats 83.76%
+
+16.45MB. Beats 68.40%
+
+O(nlogn)
+
+```python
+class Solution:
+    def specialArray(self, nums: List[int]) -> int:
+        nums.sort()
+        num_len = len(nums)
+        for target_num in range(num_len + 1):
+            start = 0
+            end = len(nums) - 1
+            while start <= end:
+                mid = (start + end) // 2
+                if nums[mid] >= target_num:
+                    end = mid - 1
+                else:
+                    start = mid + 1
+            if len(nums) - start == target_num:
+                return target_num
+            
+        return -1
+```
+---
