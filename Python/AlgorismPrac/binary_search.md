@@ -379,3 +379,46 @@ class Solution:
         return -1
 ```
 ---
+https://leetcode.com/problems/fair-candy-swap/description/
+
+총 수를 구해서 각각 몇개씩 가져야 하는지 계산
+
+순서대로 하나씩 주었을때 목적하는 수와 같은 수가 있다면 그걸 주면 된다
+
+[1,1] [2,2]가 있으면 먼저 1 타겟. 총수는 6. 구해야 하는 수는 3.
+
+1을 주면 받은 쪽은 5가됨. 5 - 3 하면 2.
+
+2를 가지고 있으면 그걸 주면 됨
+
+답 [1, 2]
+
+이진검색을 하면 더 빨라질 수가 없을듯. 
+
+솔루션 봐도 이진검색보다는 다른 방법 이용.
+
+343ms. Beats 31.36%
+
+18.36MB. Beats 98.63%
+
+O(nlogn)
+
+```python
+class Solution:
+    def fairCandySwap(self, aliceSizes: List[int], bobSizes: List[int]) -> List[int]:
+        bobSizes.sort()
+        diff = (sum(aliceSizes) - sum(bobSizes)) // 2
+
+        for alice_num in aliceSizes:
+            start = 0
+            end = len(bobSizes) - 1
+            target_num = alice_num - diff
+            while start <= end:
+                mid = (start + end) // 2
+                if (bobSizes[mid]) == target_num:
+                    return [alice_num, bobSizes[mid]]
+                elif (bobSizes[mid]) < target_num:
+                    start = mid + 1
+                else:
+                    end = mid - 1
+```
