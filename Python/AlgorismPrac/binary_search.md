@@ -422,3 +422,177 @@ class Solution:
                 else:
                     end = mid - 1
 ```
+---
+
+https://leetcode.com/problems/kth-missing-positive-number/
+
+누락된 k번째 수를 찾는 문제.
+
+k번째가 진행되는 만큼 start도 꾸준히 올라감
+
+그 이상으로 가기 전까지 start 올리고 그 기준으로 k 합산
+
+52ms. Beats 54.20%
+
+16.71MB. Beats 17.41%
+
+O(logn)
+
+```python
+class Solution:
+    def findKthPositive(self, arr: List[int], k: int) -> int:
+        start = 0
+        end = len(arr) - 1
+        while start <= end:
+            mid = end - (end - start) // 2
+            missing = arr[mid] - (mid + 1)
+            if missing < k:
+                start += mid + 1
+            else:
+                end = mid - 1
+        return start + k
+```
+---
+
+https://leetcode.com/problems/minimum-common-value/description/
+
+공통 최소 정수 찾는 문제
+
+공통 있으면 해당 정수 반환
+
+공통 없으면 -1 반환.
+
+하나씩 이진 검색으로 찾기.
+
+341ms. Beats 71.69%
+
+34.86MB. Beats 68.47%
+
+O(nlogm). 하나씩 순회 + 이진검색으로 찾기
+
+```python
+class Solution:
+    def getCommon(self, nums1: List[int], nums2: List[int]) -> int:
+        nums1_len = len(nums1)
+        nums2_len = len(nums2)
+        # 두 리스트를 일괄처리하기 위해 input 조정. 더 적은게 앞에 가야 함
+        if nums1_len > nums2_len:
+            return self.getCommon(nums2, nums1)
+        prev=0
+        for i in nums1:
+            j = bisect_left(nums2, i, lo=prev)
+            if j==nums2_len: 
+                return -1
+            elif i==nums2[j]: 
+                return i
+            else: 
+                prev=j
+        return -1
+```
+---
+
+https://leetcode.com/problems/intersection-of-two-arrays-ii/description/
+
+두 배열의 교집합 리스트를 반환하는 문제
+
+이진 검색으로 찾기. 결국 핵심은 요소를 다른 배열에 검색하는 방식.
+
+49ms. Beats 52.91%
+
+16.75MB. Beats 26.01%
+
+O(nlogm). 하나씩 순회 + 이진검색으로 찾기
+
+```python
+class Solution:
+    def intersect(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        if len(nums1) > len(nums2):
+            return self.intersect(nums2, nums1)
+        
+        nums1.sort()
+        nums2.sort()
+        ans = []
+        l = 0
+        r = len(nums2) - 1
+
+        for num in nums1:
+            i = self.binarySearch(nums2, l, r, num)
+            if i != -1:
+                l = i + 1
+                ans.append(num)
+        
+        return ans
+    
+    def binarySearch(self, a, l, r, x):
+        while l <= r:
+            m = (l + r) // 2
+            while m - 1 >= l and a[m - 1] == x:
+                m -= 1
+            if a[m] == x:
+                return m
+            if a[m] > x:
+                r = m - 1
+            else:
+                l = m + 1
+        return -1
+```
+---
+
+https://leetcode.com/problems/binary-search/description/
+
+전통적인 이진검색 문제.
+
+값이 있으면 인덱스를 반환하고 없으면 -1을 반환한다.
+
+185ms. Beats 84.63%
+
+18.09MB. Beats 67.00%
+
+O(logn)
+
+```python
+class Solution:
+    def search(self, nums: List[int], target: int) -> int:
+        start = 0
+        end = len(nums) - 1
+
+        while start < end:
+            mid = start + (end - start) // 2
+            if nums[mid] >= target:
+                end = mid
+            else:
+                start = mid + 1
+
+        if nums[start] != target:
+            return -1
+        return start
+```
+---
+
+https://leetcode.com/problems/binary-search/description/
+
+미리 선언된 함수를 이용해서 값을 추론하는 문제
+
+guess함수 반환값에 따라 up, down을 정해서 이진검색 실시
+
+36ms. Beats 46.42%
+
+16.41MB. Beats 56.07%
+
+O(logn)
+
+```python
+class Solution:
+    def guessNumber(self, n: int) -> int:
+        start, end = 1, n
+        while start <= end:
+            mid = start + (end - start) // 2
+            res = guess(mid)
+            if res == 0:
+                return mid
+            elif res == -1: # -1이면 더 높음. 내려가야 함
+                end = mid - 1
+            else: # 1이면 더 낮음. 올라가야 함
+                start = mid + 1
+        return -1
+```
