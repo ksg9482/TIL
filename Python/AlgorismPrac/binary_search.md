@@ -596,3 +596,143 @@ class Solution:
                 start = mid + 1
         return -1
 ```
+---
+
+https://leetcode.com/problems/find-smallest-letter-greater-than-target/description/
+
+타겟보다 작은 글자 찾는 문제.
+
+알파벳을 기준으로 한다. 있으면 그대로 반환하고 없으면 첫번째 문자 반환한다.
+
+문자열끼리 비교 가능. 문자열 비교 이용한다. 
+
+105ms. Beats 62.44%
+
+16.79MB. Beats 91.23%
+
+O(logn).
+
+```python
+class Solution:
+    def nextGreatestLetter(self, letters: List[str], target: str) -> str:
+        start = 0
+        end = len(letters)
+        
+        while start < end:
+            mid = (start + end) // 2
+            if letters[mid] > target:
+                end = mid
+            else:
+                start = mid + 1
+        return letters[end] if end < len(letters) else letters[0]
+```
+---
+
+https://leetcode.com/problems/longest-subsequence-with-limited-sum/description/
+
+부분 시퀸스를 미리 만들어 놓고 이진 검색
+
+98ms. Beats 55.58%
+
+16.88MB. Beats 68.59%
+
+```python
+class Solution:
+    def answerQueries(self, nums: List[int], queries: List[int]) -> List[int]:
+        nums.sort()
+        ans = [0]*len(queries)
+        # 부분 시퀸스 생성
+        for i in range(1, len(nums)):
+            nums[i] += nums[i - 1]
+        
+        # 각 부분 시퀸스로 판단
+        for i, query in enumerate(queries):
+            idx = -1
+            start = 0
+            end = len(nums) - 1
+            while start <= end:
+                mid = (start+end)//2
+                if nums[mid]<=query:
+                    idx = mid
+                    start = mid+1
+                else:
+                    end = mid-1
+
+            ans[i] = idx + 1
+
+        # 가장 긴 부분시퀸스 반환
+        return ans
+```
+---
+
+https://leetcode.com/problems/search-insert-position/description/
+
+리스트에 삽입할 장소를 찾는 문제.
+
+이진 검색으로 값이 있으면 그 인덱스 반환.
+
+없으면 순서대로 증가하도록 삽입하고 그 인덱스 반환.
+
+50ms. Beats 52.87%
+
+17.40MB. Beats 15.61%
+
+O(logn).
+
+```python
+class Solution:
+    def searchInsert(self, nums: List[int], target: int) -> int:
+        length = len(nums)
+        start = 0
+        end = length - 1
+
+        while start <= end:
+            mid = (start + end) // 2
+            if nums[mid] == target:
+                return mid
+            if nums[mid] > target:
+                end = mid - 1
+            else:
+                start = mid + 1
+        
+        # 삽입할 장소가 앞에 있다는 의미.
+        if start > end: 
+            return end + 1
+        
+        return length
+```
+---
+
+https://leetcode.com/problems/first-bad-version/description/
+
+api 호출해서 그 값으로 이진검색 하는 문제
+
+사실상 True가 나오는 가장 작은 수를 찾는다.
+
+True 안나올 때까지 end 감소. False 나오면 start 증가.
+
+균형 맞는 부분이 답
+
+34ms. Beats 59.36%
+
+16.38MB. Beats 87.40%
+
+O(logn).
+
+```python
+class Solution:
+    def firstBadVersion(self, n: int) -> int:
+        start = 0
+        end = n
+        mid = n // 2
+
+        while start < end:
+            # 앞은 False여야 함
+            if isBadVersion(mid):
+                end = mid
+            else:
+                start = mid + 1
+            mid = (start + end) // 2
+                
+        return start
+```
