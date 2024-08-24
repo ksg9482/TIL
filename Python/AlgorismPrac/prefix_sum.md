@@ -118,3 +118,123 @@ class Solution:
                 highest = current
         return highest
 ```
+---
+
+
+https://leetcode.com/problems/sum-of-all-odd-length-subarrays/description/
+
+홀수개 부분배열을 더한 합을 구하는 문제
+
+홀수개씩 슬라이스 해서 더하기 -> 이러니까 O(n^3)나옴. 56ms. Beats 51.02%
+
+빈도수로 찾는 솔루션으로 전환.
+
+부분배열에 해당 요소가 몇번 들어가냐를 찾으면 됨
+
+35ms. Beats 93.85%
+
+16.54MB. Beats 40.93%
+
+O(n)
+
+```python
+class Solution:
+    def sumOddLengthSubarrays(self, arr: List[int]) -> int:
+        arr_len = len(arr)
+        result = 0
+        
+        for i in range(arr_len):
+            start = arr_len - i
+            end = i + 1
+            total = start * end
+            odd = (total + 1) // 2
+            result += odd * arr[i]
+        
+        return result
+```
+---
+https://leetcode.com/problems/ant-on-the-boundary/description/
+
+포인터가 좌우로 이동하다가 0지점에서 멈춘 횟수를 세는 문제
+
+넘어간건 세지 않는다
+
+42ms. Beats 66.67%
+
+16.57MB. Beats 20.33%
+
+O(n)
+
+```python
+class Solution:
+    def returnToBoundaryCount(self, nums: List[int]) -> int:
+        ans = 0
+        pointer = 0
+        for num in nums:
+            pointer += num
+            if pointer == 0:
+                ans += 1
+
+        return ans
+```
+---
+
+https://leetcode.com/problems/find-the-middle-index-in-array/description/
+
+특정 인덱스를 기준으로 좌우가 같은 지점을 찾는 문제
+
+좌 인덱스에서 이동.
+
+가장 왼쪽 요소를 반환해야 하니 왼쪽부터 해야 편함
+
+37ms. Beats 86.01%
+
+16.44MB. Beats 74.84%
+
+O(n)
+
+```python
+class Solution:
+    def findMiddleIndex(self, nums: List[int]) -> int:
+        mid = 0
+        while mid < len(nums):
+            left_sum = sum(nums[0:mid])
+            right_sum = sum(nums[mid + 1::])
+            if left_sum == right_sum:
+                return mid
+            else:
+                mid += 1
+
+        return -1
+```
+---
+
+https://leetcode.com/problems/find-the-middle-index-in-array/description/
+
+요소 계산할 때 +1 되도록 startValue에 더하기.
+
+음수면 양수가 되도록 가공해서 넣는다
+
+음수로 떨어지는 결과값에서 +1 만큼만 커져도 됨
+
+30ms. Beats 91.22%
+
+16.45MB. Beats 62.44%
+
+O(n)
+
+```python
+class Solution:
+    def minStartValue(self, nums: List[int]) -> int:
+        num_sum = 0
+        min_start_value = 1
+        
+        for num in nums:
+            num_sum += num
+            # 차이값. 1미만이 나오면 안됨 -> 기존값이 더 크면 유지
+            # 음수면 그보다 1보다 커야함 -> 1 - (-n)이 되서 1더한 값이랑 비교
+            min_start_value = max(min_start_value, 1-num_sum)
+
+        return min_start_value
+```
+---
