@@ -238,3 +238,139 @@ class Solution:
         return min_start_value
 ```
 ---
+
+https://leetcode.com/problems/range-sum-query-immutable/
+
+리스트에서 특정 구간의 합을 구하는 문제.
+
+미리 계산해서 넣어놓고 범위 구한다.
+
+start, end해서 end - start하면 된다
+
+71ms. Beats 59.19%
+
+20.17MB. Beats 47.79%
+
+O(n)
+
+```python
+class NumArray:
+
+    def __init__(self, nums: List[int]):
+        self.nums = nums
+        self.sums = [0]
+        for num in nums:
+            self.sums.append(self.sums[-1] + num)
+        #초기값 0 지우기
+        self.sums = self.sums[1::]
+
+    def sumRange(self, left: int, right: int) -> int:
+        return self.sums[right] if left == 0 else self.sums[right] - self.sums[left - 1]
+
+```
+---
+
+https://leetcode.com/problems/maximum-score-after-splitting-a-string/description/
+
+[0:p] [p+1::]로 left, right를 만들어서 계산하는 문제
+
+left는 포함된 0으로, right는 포함된 1로 합산한다.
+
+어차피 0번째 부터 봐야 한다. 먼저 1번째부터 순회한번 해서 1개수 파악
+
+다음에 포인터를 좌에서 우로 옮기면서 0 오면 left 증가, 1이면 right 감소
+
+26ms. Beats 98.41%
+
+16.56MB. Beats 41.58%
+
+O(n)
+
+```python
+class Solution:
+    def maxScore(self, s: str) -> int:
+        left, right = s[0:1], s[1::]
+        left_sum = 1 if left[0] == '0' else 0
+        right_sum = 0
+        for right_chr in right:
+            if right_chr == '1':
+                right_sum += 1
+        max_score = left_sum + right_sum
+
+        for i in range(len(right) - 1):
+            if right[i] == '1':
+                right_sum -= 1
+            else:
+                left_sum += 1
+            temp_sum = left_sum + right_sum
+            if temp_sum > max_score:
+                max_score = temp_sum
+
+        return max_score
+```
+---
+https://leetcode.com/problems/maximum-population-year/description/
+
+연도 레인지 사이에 가장 많은 인원이 있는 연도를 구하는 문제
+
+birth, death로 리스트 만들어서 사전으로 관리
+
+가장 구간 많은 연도가 인원 많은것.
+
+가장 빠른 날짜이니 우선 정렬하고 체크한다
+
+43ms. Beats 64.68%
+
+16.62MB. Beats 12.78%
+
+O(n*m)
+
+```python
+class Solution:
+    def maximumPopulation(self, logs: List[List[int]]) -> int:
+        logs.sort()
+        year_to_count_dict = defaultdict(int)
+        max_year = 0
+        count = 0
+        for log in logs:
+            year_range = range(log[0], log[1])
+            for year in year_range:
+                count += 1
+                year_to_count_dict[year] += 1
+
+        for idx, year in enumerate(year_to_count_dict):
+            if idx == 0:
+                max_year = year
+                continue
+            if year_to_count_dict[max_year] < year_to_count_dict[year]:
+                max_year = year
+
+        return max_year
+```
+---
+https://leetcode.com/problems/find-pivot-index/description/
+
+좌우 합이 같아지는 지점을 찾는 문제
+
+좌:0, 우:sum해서 요소만큼 우에서 좌로 값 보낸다
+
+120ms. Beats 70.64%
+
+17.70MB. Beats 83.91%
+
+O(n)
+
+```python
+class Solution:
+    def pivotIndex(self, nums: List[int]) -> int:
+        left, right = 0, sum(nums)
+
+        for idx, num in enumerate(nums):
+            right -= num
+            if left == right:
+                return idx
+            left += num
+            
+        return -1
+```
+---
