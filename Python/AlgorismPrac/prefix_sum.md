@@ -374,3 +374,68 @@ class Solution:
         return -1
 ```
 ---
+https://leetcode.com/problems/check-if-all-the-integers-in-a-range-are-covered/description/
+
+공간에 ranges로 모든 곳이 커버되었는지 확인하는 문제
+
+커버할 공간을 미리 만들고 거기에서 누적합 구한다
+
+커버된곳은 1이상으로 올라간다. 안된곳은 0.
+
+39ms. Beats 82.27%
+
+16.55MB. Beats 35.07%
+
+O(n)
+
+```python
+class Solution:
+    def isCovered(self, ranges: List[List[int]], left: int, right: int) -> bool:
+        cover_list = [0 for _ in range(52)] # 51까지 0리스트 생성. 51번째 칸까지 가도록 end + 1
+        for start, end in ranges:
+            cover_list[start] += 1
+            cover_list[end + 1] -= 1
+        
+        for i in range(2, right + 1): # 누적합. range는 1부터 시작 -> 그 이후부터 누적합 채운다
+            cover_list[i] += cover_list[i - 1]
+        
+        for i in range(left, right + 1):
+            if cover_list[i] < 1: # 커버 안된곳은 0임.
+                return False
+        
+        return True
+```
+---
+
+https://leetcode.com/problems/points-that-intersect-with-cars/description/
+
+주차공간이 차량으로 얼마나 덮였는지 확인하는 문제
+
+간격 구해서 누적합으로 처리
+
+69ms. Beats 85.98%
+
+16.35MB. Beats 99.07%
+
+O(nlogn)
+
+```python
+class Solution:
+    def numberOfPoints(self, nums: List[List[int]]) -> int:
+        nums.sort()
+        left, right = nums[0]
+        ans = right - left + 1
+
+        for i in range(1, len(nums)):
+            start, end = nums[i]
+
+            if right > start:
+                ans += max(end - right, 0) # 음수 이하로 떨어지면 안됨
+            else:
+                ans += end - start + int(right != start) # True:1, False:0
+
+            left, right = start, max(right, end)
+
+        return ans
+```
+---
