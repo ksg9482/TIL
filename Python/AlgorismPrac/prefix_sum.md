@@ -439,3 +439,35 @@ class Solution:
         return ans
 ```
 ---
+
+https://leetcode.com/problems/minimum-amount-of-time-to-collect-garbage/description/
+
+쓰레기 수거 차량이 쓰레기를 수거하는데 필요한 총 시간을 구하는 문제
+
+쓰레기는 사전으로 관리. 쓰레기가 가장 마지막에 등장하는 지점 파악하는게 중요
+
+쓰레기 수거는 각각 1분이지만 거리는 누적합으로 들어가야 함
+
+쓰레기마다 누적합이 그만큼 들어감
+
+753ms. Beats 69.47%
+
+38.67MB. Beats 67.09%
+
+```python
+class Solution:
+    def garbageCollection(self, garbage: List[str], travel: List[int]) -> int:
+        total_time = 0
+        garbage_to_travel_dict = {'M': 0, 'P': 0, 'G': 0}
+        travel_sum = 0
+
+        for i, items in enumerate(garbage):
+            if i > 0:
+                travel_sum += travel[i-1]
+
+            for item in items:
+                total_time += 1
+                garbage_to_travel_dict[item] = travel_sum
+
+        return total_time + sum(garbage_to_travel_dict.values())
+```
