@@ -128,3 +128,38 @@ class Solution:
         return 0
 ```
 ---
+
+https://leetcode.com/problems/baseball-game/
+
+지정된 룰에 맞게 점수 계산하는 문제
+
+스택에 숫자 넣어가면서 계산. 숫자가 아닌 문자열은 계산식으로.
+
+음수 포함해서 숫자만 거르는건 복잡하기에 문자열 케이스를 상단에서 처리.
+
+남은건 자연히 숫자로 변환할 수 있는 문자열만.
+
+41ms. Beats 75.07%
+
+16.84MB. Beats 9.36%
+
+O(n)
+
+```python
+class Solution:
+    def calPoints(self, operations: List[str]) -> int:
+        num_stack = deque()
+
+        for operation in operations:
+            if operation == "C":
+                num_stack.pop()
+            elif operation == "+":
+                num_stack.append(num_stack[-1] + num_stack[-2])
+            elif operation == "D":
+                num_stack.append(num_stack[-1] * 2)
+            else:
+                num_stack.append(int(operation))
+
+        return sum(num_stack)
+```
+---
