@@ -163,3 +163,65 @@ class Solution:
         return sum(num_stack)
 ```
 ---
+
+https://leetcode.com/problems/next-greater-element-i/description/
+
+num1[i]와 같은 요소를 num2에서 찾고 그 인덱스 기준으로 더 큰 수를 찾는 문제
+
+유니크한 값이니 사전으로 관리할 수 있을듯
+
+40ms. Beats 93.25%
+
+16.79MB. Beats 69.27%
+
+O(n^2). 최악 모든 요소가 맨 끝까지 가야함
+
+```python
+class Solution:
+    def nextGreaterElement(self, nums1: List[int], nums2: List[int]) -> List[int]:
+        num_to_next_dict = defaultdict(int)
+        ans = []
+        for i in range(1, len(nums2)):
+            next_idx = i
+            while next_idx < len(nums2):
+                if nums2[i - 1] < nums2[next_idx]:
+                    num_to_next_dict[nums2[i - 1]] = nums2[next_idx]
+                    break
+                next_idx += 1
+        
+        for num_1 in nums1:
+            next_num = num_to_next_dict.get(num_1)
+            if next_num is None:
+                ans.append(-1)
+            else:
+                ans.append(next_num)
+
+        return ans
+```
+---
+
+https://leetcode.com/problems/clear-digits/description/
+
+문자는 스택에 넣고 숫자 오면 pop해서 최종 결과 만드는 문제
+
+deque에 넣어서 관리하다가 "".join()으로 문자열화 해서 반환한다
+
+36ms. Beats 66.35%
+
+16.52MB. Beats 23.74%
+
+O(n)
+
+```python
+class Solution:
+    def clearDigits(self, s: str) -> str:
+        chars = deque()
+        for s_char in s:
+            if s_char.isalpha():
+                chars.append(s_char)
+            else:
+                chars.pop()
+        
+        return "".join(chars)
+```
+---
