@@ -225,3 +225,58 @@ class Solution:
         return "".join(chars)
 ```
 ---
+https://leetcode.com/problems/crawler-log-folder/
+
+경로를 스택에 넣어 관리하다 마지막 길이를 구하는 문제.
+
+현재 경로에서 처음경로까지는 결국 스택에 몇개 들었나를 보는 것.
+
+47ms. Beats 73.02%
+
+16.64MB. Beats 75.28%
+
+O(n)
+
+```python
+class Solution:
+    def minOperations(self, logs: List[str]) -> int:
+        path_stack = deque()
+        for log in logs:
+            if log == "../":
+                if len(path_stack) >= 1:
+                    path_stack.pop()
+            elif log == "./":
+                pass
+            else:
+                path_stack.append(log)
+                    
+        return len(path_stack)
+```
+---
+
+https://leetcode.com/problems/remove-all-adjacent-duplicates-in-string/
+
+스택 이용.
+
+중복 확인하면서 맨 마지막과 비교
+
+51ms. Beats 92.31%
+
+17.26MB. Beats 80.47%
+
+O(n)
+
+```python
+class Solution:
+    def removeDuplicates(self, s: str) -> str:
+        stack = []
+
+        for char in s:
+            if stack and stack[-1] == char:
+                stack.pop()
+            else:
+                stack.append(char)
+
+        return ''.join(stack)
+```
+---
