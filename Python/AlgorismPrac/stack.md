@@ -280,3 +280,206 @@ class Solution:
         return ''.join(stack)
 ```
 ---
+
+https://leetcode.com/problems/minimum-string-length-after-removing-substrings/description/
+
+스택 이용.
+
+입력 문자와 이전문자로 타겟되는 문자열 만들어지면 제거.
+
+40ms. Beats 80.11%
+
+16.43MB. Beats 77.74%
+
+O(n)
+
+```python
+class Solution:
+    def minLength(self, s: str) -> int:
+        s_stack = deque(s)
+        ans = deque()
+
+        while s_stack:
+            s_char = s_stack.popleft()
+            if ans and (ans[-1] == "A" and s_char == "B"):
+                ans.pop()
+            elif ans and (ans[-1] == "C" and s_char == "D"):
+                ans.pop()
+            else:
+                ans.append(s_char)
+
+        return len(ans)
+```
+---
+
+https://leetcode.com/problems/make-the-string-great/description/
+
+스택 이용.
+
+연속된 입력문자 2개가 동일한 문자의 대-소문자 또는 소-대문자인 경우 제거한다
+
+사전에 {알파벳 : 인덱스}로 넣는다
+
+두 문자의 차 절대값이 26이면 동일 문자
+
+30ms. Beats 94.10%
+
+16.61MB. Beats 28.86%
+
+O(n)
+
+```python
+class Solution:
+    def makeGood(self, s: str) -> str:
+        ans = deque()
+        stack = deque(s)
+        letter_to_idx_dict = defaultdict(int)
+        for idx, letter in enumerate(string.ascii_letters):
+            letter_to_idx_dict[letter] = idx
+        
+        while stack:
+            s_char = stack.popleft()
+            if ans and (abs(letter_to_idx_dict.get(ans[-1]) - letter_to_idx_dict.get(s_char)) == 26):
+                ans.pop()
+            else:
+                ans.append(s_char)
+        
+        return "".join(ans)
+```
+---
+
+https://leetcode.com/problems/implement-stack-using-queues/description/?envType=problem-list-v2&envId=stack&difficulty=EASY
+
+큐 2개로 스택 구현체 만드는 문제
+
+파이썬 동작이 아니라 일반적인 스택 동작에 맞추어 구현
+
+31ms. Beats 79.48%
+
+16.62MB. Beats 32.57%
+
+O(n). 큐 2개로 데이터를 옮겨야 해서 n이 클수록 늘어남
+
+```python
+class MyStack:
+
+    def __init__(self):
+        self.queue_1 = deque()
+        self.queue_2 = deque()
+
+    def push(self, x: int) -> None:
+        self.queue_1.append(x)
+
+    def pop(self) -> int:
+        while len(self.queue_1) > 1:
+            self.queue_2.append(self.queue_1.popleft())
+        
+        poped = self.queue_1.popleft()
+
+        while self.queue_2:
+            self.queue_1.append(self.queue_2.popleft())
+        
+        return poped
+
+    def top(self) -> int:
+        while len(self.queue_1) > 1:
+            self.queue_2.append(self.queue_1.popleft())
+        
+        top_value = self.queue_1[0]
+
+        self.queue_2.append(self.queue_1.popleft())
+
+        while self.queue_2:
+            self.queue_1.append(self.queue_2.popleft())
+        
+        return top_value
+
+    def empty(self) -> bool:
+        return len(self.queue_1) == 0
+```
+---
+
+https://leetcode.com/problems/implement-queue-using-stacks/?envType=problem-list-v2&envId=stack&difficulty=EASY
+
+스택 2개로 큐 구현체 만드는 문제
+
+파이썬 동작이 아니라 일반적인 큐 동작에 맞추어 구현
+
+34ms. Beats 63.00%
+
+16.73MB. Beats 30.33%
+
+O(n). 스택 2개로 데이터를 옮겨야 해서 n이 클수록 늘어남
+
+```python
+class MyQueue:
+
+    def __init__(self):
+        self.stack_1 = deque()
+        self.stack_2 = deque()
+
+    def push(self, x: int) -> None:
+        self.stack_1.append(x)
+
+    def pop(self) -> int:
+        while len(self.stack_1) > 1:
+            self.stack_2.append(self.stack_1.pop())
+        
+        poped = self.stack_1.pop()
+
+        while self.stack_2:
+            self.stack_1.append(self.stack_2.pop())
+        
+        return poped
+
+    def peek(self) -> int:
+        while len(self.stack_1) > 1:
+            self.stack_2.append(self.stack_1.pop())
+        
+        peeked = self.stack_1[0]
+
+        self.stack_2.append(self.stack_1.pop())
+
+        while self.stack_2:
+            self.stack_1.append(self.stack_2.pop())
+        
+        return peeked
+
+    def empty(self) -> bool:
+        return len(self.stack_1) == 0
+```
+---
+
+https://leetcode.com/problems/palindrome-linked-list/description/?envType=problem-list-v2&envId=stack&difficulty=EASY
+
+스택으로 팰린드롬 여부 확인하는 문제
+
+스택에 먼저 넣어두고 원본, 스택 대조하며 확인.
+
+다른거 나오면 팰린드롬 아님.
+
+289ms. Beats 64.29%
+
+37.01MB. Beats 25.36%
+
+O(n)
+
+```python
+class Solution:
+    def isPalindrome(self, head: Optional[ListNode]) -> bool:
+        stack = deque()
+        node = head
+        while node:
+            stack.append(node.val)
+            node = node.next
+        
+        node = head
+        while stack:
+            stack_val = stack.pop()
+            if not stack_val == node.val:
+                return False
+            node = node.next
+        
+        return True
+```
+---
