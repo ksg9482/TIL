@@ -483,3 +483,41 @@ class Solution:
         return True
 ```
 ---
+https://leetcode.com/problems/backspace-string-compare/?envType=problem-list-v2&envId=stack&difficulty=EASY
+
+스택으로 관리
+
+문자열 에서 # 나오면 이전 문자 pop 한다
+
+문자열 길이 관리가 더 신경쓸게 많음
+
+32ms. Beats 77.02%
+
+16.47MB. Beats 74.45%
+
+O(n)
+
+```python
+class Solution:
+    def backspaceCompare(self, s: str, t: str) -> bool:
+        stack = deque()
+        stack_2 = deque()
+        
+        for s_char in s:
+            if stack and s_char == "#":
+                stack.pop()
+            elif not s_char == "#":
+                stack.append(s_char)
+
+        for t_char in t:
+            if stack_2 and t_char == "#":
+                stack_2.pop()
+            elif not t_char == "#":
+                stack_2.append(t_char)
+        
+        while stack and stack_2:
+            if not (stack.pop() == stack_2.pop()):
+                return False
+
+        return len(stack) == 0 and len(stack_2) == 0
+```
