@@ -1,8 +1,3 @@
-
-김석규
-오후 6:22 (3시간 전)
-나에게
-
 https://leetcode.com/problems/add-digits/description/?envType=problem-list-v2&envId=simulation&difficulty=EASY
 
 숫자 각 자리를 별개 숫자로 인식해서 더하는 문제
@@ -233,5 +228,69 @@ class Solution:
                     idx += 1
 
         return ans
+```
+---
+
+https://leetcode.com/problems/robot-return-to-origin/description/?envType=problem-list-v2&envId=simulation&difficulty=EASY
+
+포인트의 좌표 이동이 끝났을 때 원점으로 돌아오나 확인하는 문제
+
+ud, lr 한 쌍 개수가 맞으면 원점으로 돌아온다.
+
+계산 마치고 둘다 0이면 원점.
+
+46ms. Beats 73.02%
+
+16.54MB. Beats 53.14%
+
+O(n)
+
+```python
+class Solution:
+    def judgeCircle(self, moves: str) -> bool:
+        u_count = 0
+        l_count = 0
+
+        for move in moves:
+            if move == "U":
+                u_count += 1
+            elif move == "D":
+                u_count -= 1
+            elif move == "L":
+                l_count += 1
+            else:
+                l_count -= 1
+        
+        return u_count == 0 and l_count == 0
+```
+---
+
+https://leetcode.com/problems/transpose-matrix/?envType=problem-list-v2&envId=simulation&difficulty=EASY
+
+2차원 리스트 축을 90도 돌리는 문제
+
+데크에 값 넣고 마지막에 리스트로 변환한다.
+
+60ms. Beats 87.49%
+
+17.46MB. Beats 12.24%
+
+O(n*m) col과 row가 클수록 오래걸림
+
+```python
+class Solution:
+    def transpose(self, matrix: List[List[int]]) -> List[List[int]]:
+        col_len = len(matrix[0])
+        ans = deque([deque() for _ in range(col_len)])
+
+        for row in matrix:
+            for idx, col in enumerate(row):
+                target_idx = idx % col_len
+                ans[target_idx].append(col)
+
+        for i in range(len(ans)):
+            ans[i] = list(ans[i])
+        
+        return list(ans)
 ```
 ---
