@@ -101,3 +101,137 @@ class Solution:
         return ''.join(result[::-1])
 ```
 ---
+"""
+https://leetcode.com/problems/available-captures-for-rook/description/?envType=problem-list-v2&envId=simulation&difficulty=EASY
+
+룩이 잡을 수 있는 폰 갯수를 세는 문제. 2차원 배열. 중간에 막히면 못잡음.
+
+룩 위치 제공 안됨 -> 순회로 찾아야 함. 
+
+어차피 찾을 거 다 찾은 후 계산하자
+
+33ms. Beats 81.96%
+
+16.62MB. Beats 6.01%
+
+O(1). 타겟이 많아도 결국 1개씩 잡으면 종료됨. 입력의 크기 자체는 항상 고정.
+"""
+
+```python
+class Solution:
+    def numRookCaptures(self, board: List[List[str]]) -> int:
+        unit_to_point_dict = defaultdict(str)
+        start = []
+        ans = 0
+        for r_idx, row in enumerate(board):
+            for c_idx, col in enumerate(row):
+                if col == "R":
+                    start = [r_idx, c_idx]
+                if not col == ".":
+                    unit_to_point_dict[f'{[r_idx, c_idx]}'] = col
+
+        # up
+        for i in range(start[0] - 1, -1, -1):
+            point = unit_to_point_dict.get(f'{[i, start[1]]}')
+            if point and point == "p":
+                ans += 1
+                break
+            elif point and not point == "p":
+                break
+
+        # down
+        for i in range(start[0] + 1, 9):
+            point = unit_to_point_dict.get(f'{[i, start[1]]}')
+            if point and point == "p":
+                ans += 1
+                break
+            elif point and not point == "p":
+                break
+        
+        # left
+        for i in range(start[1] - 1, -1, -1):
+            point = unit_to_point_dict.get(f'{[start[0], i]}')
+            if point and point == "p":
+                ans += 1
+                break
+            elif point and not point == "p":
+                break
+        
+        # right
+        for i in range(start[1] + 1, 9):
+            point = unit_to_point_dict.get(f'{[start[0], i]}')
+            if point and point == "p":
+                ans += 1
+                break
+            elif point and not point == "p":
+                break
+
+        return ans
+```
+---
+
+https://leetcode.com/problems/teemo-attacking/description/?envType=problem-list-v2&envId=simulation&difficulty=EASY
+
+초당 1씩 가산 -> 현재 - 과거 해서 작은걸로 넣는다. 
+
+시간이 더 커도 duration 이상으론 안 들어간다.
+
+194ms. Beats 56.35%
+
+17.90MB. Beats 95.07%
+
+O(n)
+
+```python
+class Solution:
+    def findPoisonedDuration(self, timeSeries: List[int], duration: int) -> int:
+        ans = 0
+
+        for i in range(len(timeSeries) - 1):
+            poisoned_time = min(duration, timeSeries[i+1]-timeSeries[i])
+            ans += poisoned_time
+
+        ans += duration
+        
+        return ans
+```
+---
+
+https://leetcode.com/problems/reshape-the-matrix/?envType=problem-list-v2&envId=simulation&difficulty=EASY
+
+n차원 배열을 m차원 배열로 변환하는 문제
+
+숫자 갯수가 맞는지 확인
+
+맞으면 변환 아니면 원본 반환
+
+모듈러 연산으로 인덱스 관리
+
+75ms. Beats 60.98%
+
+17.12MB. Beats 97.72%
+
+O(n)
+
+```python
+class Solution:
+    def matrixReshape(self, mat: List[List[int]], r: int, c: int) -> List[List[int]]:
+        row_len = len(mat)
+        col_len = len(mat[0])
+        ans = [[] for _ in range(r)]
+
+        if not (col_len * row_len) == r * c:
+            return mat
+        
+        count = 0
+        idx = 0
+        for row in mat:
+            for col in row:
+                ans[idx].append(col)
+                count += 1
+                if count % c == 0:
+                    idx += 1
+
+        return ans
+```
+---
