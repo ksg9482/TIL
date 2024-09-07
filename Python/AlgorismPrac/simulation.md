@@ -294,3 +294,38 @@ class Solution:
         return list(ans)
 ```
 ---
+https://leetcode.com/problems/distribute-candies-to-people/description/?envType=problem-list-v2&envId=simulation&difficulty=EASY
+
+사탕을 순서대로 분배하는 문제.
+
+숫자에 맞게 분배 할 수 없을 때, 남은 사탕은 다 줌.
+
+리스트에 순서에 맞게 가산하여 처리.
+
+35ms. Beats 82.96%
+
+16.72MB. Beats 6.02%
+
+O(n). candies가 클수록 연산 횟수 많아짐
+
+```python
+class Solution:
+    def distributeCandies(self, candies: int, num_people: int) -> List[int]:
+        ans = deque([0 for _ in range(num_people)])
+        count = 0
+        idx = 0
+        candy = 1
+
+        while candy <= candies:
+            modulo_idx = idx % num_people
+            count += candy
+            candies -= candy
+            ans[modulo_idx] += candy
+            candy += 1
+            idx += 1
+        
+        ans[idx % num_people] += candies
+
+        return list(ans)
+```
+---
