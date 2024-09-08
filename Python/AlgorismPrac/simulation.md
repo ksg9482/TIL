@@ -329,3 +329,72 @@ class Solution:
         return list(ans)
 ```
 ---
+
+https://leetcode.com/problems/cells-with-odd-values-in-a-matrix/description/?envType=problem-list-v2&envId=simulation&difficulty=EASY
+
+매트릭스의 특정 포인트 기준으로 십자에 값 더하는 문제
+
+실제로 만들고 연산한다.
+
+나중에 홀수 몇개인지 찾는다
+
+40ms. Beats 84.64%
+
+16.51MB. Beats 79.62%
+
+O(n*m)
+
+```python
+class Solution:
+    
+    def oddCells(self, n: int, m: int, indices: List[List[int]]) -> int:
+        
+        matrix = [[0 for i in range(m)] for j in range(n)] 
+        
+        def inc(x, y):
+            
+            for i in range(m):
+                matrix[x][i] += 1
+            
+            for i in range(n):
+                matrix[i][y] += 1
+                
+        for ind in indices:
+            inc(ind[0], ind[1])
+            
+            
+        return sum([0 if n % 2 == 0 else 1 for l in matrix for n in l])
+```
+---
+https://leetcode.com/problems/calculate-amount-paid-in-taxes/description/?envType=problem-list-v2&envId=simulation&difficulty=EASY
+
+세금 내역을 누적해서 계산하는 문제
+
+세금 계산 조건이 언제 바뀌는지 파악해야 한다.
+
+income 보다 커질 때 조건 바뀜
+
+67ms. Beats 81.96%
+
+16.65MB. Beats 35.75%
+
+O(n)
+
+```python
+class Solution:
+    def calculateTax(self, brackets: List[List[int]], income: int) -> float:
+        ans = 0
+        prev = 0
+        for bracket in brackets:
+            
+            if bracket[0] > income:
+                ans += (income - prev) * (bracket[1] / 100)
+                break
+            else:
+                ans += (bracket[0] - prev) * (bracket[1] / 100)
+                prev = bracket[0]
+
+        return ans
+```
+---
+
