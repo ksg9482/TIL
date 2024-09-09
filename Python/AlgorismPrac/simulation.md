@@ -398,3 +398,90 @@ class Solution:
 ```
 ---
 
+https://leetcode.com/problems/shift-2d-grid/?envType=problem-list-v2&envId=simulation&difficulty=EASY
+
+순서대로 처리한다. 
+
+처리속도를 위해서 삽입할 데크를 미리 만들어둔다.
+
+한 칸씩 뒤로 밀고 맨 뒤는 맨 앞으로.
+
+맨 앞은 col 조작이 한 번 더 들어간다.
+
+126ms. Beats 57.44%
+
+16.96MB. Beats 57.44%
+
+```python
+class Solution:
+    def shiftGrid(self, grid: List[List[int]], k: int) -> List[List[int]]:
+        grid_deque = deque()
+
+        for row in grid:
+            grid_deque.append(deque(row))
+        for i in range(k):
+            for row_deque in grid_deque:
+                poped = row_deque.pop()
+                row_deque.appendleft(poped)
+            else:
+                last_num = grid_deque[-1][0]
+                for i in range(len(grid_deque)):
+                    last_num, grid_deque[i][0] = grid_deque[i][0], last_num
+        for i in range(len(grid_deque)):
+            grid_deque[i] = list(grid_deque[i])
+           
+        return list(grid_deque)
+```
+---
+
+https://leetcode.com/problems/create-target-array-in-the-given-order/description/?envType=problem-list-v2&envId=simulation&difficulty=EASY
+
+요소를 삽입하며 리스트 만드는 문제.
+
+단순히 삽입으로 처리해도 될 듯 하다. 데크에 넣자.
+
+33ms. Beats 82.02%
+
+16.36MB. Beats 93.63%
+
+O(n)
+
+```python
+class Solution:
+    def createTargetArray(self, nums: List[int], index: List[int]) -> List[int]:
+        ans = deque()
+        for num, idx in zip(nums, index):
+            ans.insert(idx, num)
+        return list(ans)
+```
+---
+
+https://leetcode.com/problems/water-bottles/?envType=problem-list-v2&envId=simulation&difficulty=EASY
+
+물병을 더 교환할 수 없을 때까지 합산하는 문제
+
+마시기 -> numExchange 만큼 비율 교환 -> 마시기 반복.
+
+빈병 교환비율 안될 시 반복 종료
+
+34ms. Beats 59.39%
+
+16.53MB. Beats 35.10%
+
+O(logn). 반복마다 numExchange씩 작아짐 
+
+```python
+class Solution:
+    def numWaterBottles(self, numBottles: int, numExchange: int) -> int:
+        ans = numBottles
+        empty = numBottles
+
+        while empty >= numExchange:
+            changed = empty // numExchange
+            ans += changed
+            empty = empty - (numExchange * changed)
+            empty += changed
+        
+        return ans
+```
+---
