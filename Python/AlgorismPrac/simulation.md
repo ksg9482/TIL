@@ -485,3 +485,40 @@ class Solution:
         return ans
 ```
 ---
+
+김석규
+오후 6:13 (3시간 전)
+나에게
+
+선을 이룬 좌표에 값이 다 차면 승리하는 구조. 어느 한 x축, 어느 한 y축, 어느 한 대각선의 합이 3이면 완료.
+
+대각선을 int로 하면 유저 2명 합산이 들어감 -> 연속으로 점유해야 3 또는 -3됨
+
+35ms. Beats 72.00%
+
+16.47MB. Beats 87.45%
+
+O(1). moves 횟수는 정해져있음
+
+```python
+class Solution:
+    def tictactoe(self, moves: List[List[int]]) -> str:
+        n = 3 # 선길이
+        rows, cols = [0] * n, [0] * n # 각각 3줄씩
+        diag1 = diag2 = 0 # 대각선
+        for idx, move in enumerate(moves):
+            i, j = move # row, col 좌표
+            sign = 1 if idx % 2 == 0 else -1 # 2명 구분. 절대값 하면 어차피 같아짐.
+            rows[i] += sign # 어느 칸에 체크했는가
+            cols[j] += sign
+            if i == j: # 대각선 (0,0) (1,1)등 같으면 중심축으로 향하는 대각선
+                diag1 += sign
+            if i + j == n - 1: #(0,2) -> 좌표 합이 2이고 n - 1도 2, 반대쪽 대각선
+                diag2 += sign
+
+            # 먼저 3된 쪽이 승리
+            if abs(rows[i]) == n or abs(cols[j]) == n or abs(diag1) == n or abs(diag2) == n:
+                return "A" if sign == 1 else "B"
+
+        return "Draw" if len(moves) == (n * n) else 'Pending'
+```
