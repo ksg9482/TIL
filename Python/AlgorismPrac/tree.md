@@ -43,3 +43,81 @@ class Solution:
         return result
 ```
 ---
+
+https://leetcode.com/problems/diameter-of-binary-tree/description/?envType=problem-list-v2&envId=tree&difficulty=EASY
+
+트리 지름 찾는 문제. 두 노드를 연결했을 때 가장 긴 노드.
+
+뎁스와 좌우 합계중 더 긴 쪽이 지름.
+
+내부에서 찾고 바깥에서 이용해야 함 -> 리스트로 넣어서 참조타입으로.
+
+가장 긴 값으로 반환 
+
+38ms. Beats 95.72%
+
+19.22MB. Beats 82.24%
+
+O(n)
+
+
+```python
+class Solution:
+    def diameterOfBinaryTree(self, root: Optional[TreeNode]) -> int:
+        def dfs(root: Optional[TreeNode], length):
+            if not root:
+                return 0
+            
+            l_result = dfs(root.left, length)
+            r_result = dfs(root.right, length)
+
+            length[0] = max(length[0], l_result + r_result)
+
+            return max(l_result, r_result) + 1
+        
+        length = [0]
+        dfs(root, length)
+
+        return length[0]
+```
+---
+
+https://leetcode.com/problems/second-minimum-node-in-a-binary-tree/description/?envType=problem-list-v2&envId=tree&difficulty=EASY
+
+두번째로 작은 값 찾는 문제.
+
+root는 좌우 값과 비교해서 작은 값이다 -> 맨처음 루트가 가장 작은 값.
+
+다 같은 값이면 -1. 
+
+29ms. Beats 88.93%
+
+16.32MB. Beats 93.80%
+
+O(nlogn). 정렬
+
+```python
+class Solution:
+    def findSecondMinimumValue(self, root: Optional[TreeNode]) -> int:
+        def bfs(node, num_list=deque()):
+            bfs_queue = deque([node])
+
+            while bfs_queue:
+                item = bfs_queue.popleft()
+                num_list.append(item.val)
+                if item.left:
+                    bfs_queue.append(item.left)
+                if item.right:
+                    bfs_queue.append(item.right)
+            
+            return num_list
+        
+        result = bfs(root)
+        result = sorted(result)
+        for i in range(1, len(result)):
+            if result[0] < result[i]:
+                return result[i]
+            
+        return -1
+```
+---
