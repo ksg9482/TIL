@@ -121,3 +121,36 @@ class Solution:
         return -1
 ```
 ---
+
+https://leetcode.com/problems/search-in-a-binary-search-tree/description/?envType=problem-list-v2&envId=tree&difficulty=EASY
+
+특정 노드를 찾는 문제.
+
+해당 노드를 기준으로 한 서브 노드 트리를 반환한다
+
+dfs로 찾는다.
+
+53ms. Beats 71.39%
+
+18.37MB. Beats 8.86%
+
+O(n). 최악 노드 맨 끝에 있으면 끝까지 순회해야 함
+
+```python
+class Solution:
+    def searchBST(self, root: Optional[TreeNode], val: int) -> Optional[TreeNode]:
+        def dfs(root, val):
+            if not root:
+                return None
+            
+            if root.val == val:
+                return root
+            
+            l = dfs(root.left, val)
+            r = dfs(root.right, val)
+
+            return l or r
+
+        return dfs(root, val)
+```
+---
