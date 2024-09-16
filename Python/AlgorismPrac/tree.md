@@ -154,3 +154,67 @@ class Solution:
         return dfs(root, val)
 ```
 ---
+https://leetcode.com/problems/root-equals-sum-of-children/description/?envType=problem-list-v2&envId=tree&difficulty=EASY
+
+루트와 좌우 합이 같나 확인하는 문제
+
+어떤 순회 방식으로든 될듯?
+
+배열에 넣어서 root, 합산으로 비교
+
+35ms. Beats 58.73%
+
+16.54MB. Beats 6.17%
+
+O(n)
+
+```python
+class Solution:
+    def checkTree(self, root: Optional[TreeNode]) -> bool:
+        sum_count = []
+        def dfs(node):
+            if not node:
+                return 0
+            sum_count.append(node.val)
+            dfs(node.left)
+            dfs(node.right)
+
+        dfs(root)
+
+        return sum_count[0] == sum_count[1] + sum_count[2]
+```
+---
+
+ttps://leetcode.com/problems/subtree-of-another-tree/description/?envType=problem-list-v2&envId=tree&difficulty=EASY
+
+주어진 비교트리와 서브트리가 동일한지 확인하는 문제.
+
+root.val가 같으면 서브트리로 간주하고 확인.
+
+핵심은 서브트리인지만 확인하면 된다는 것.
+
+문자열로 만들고 같은 형상인지 확인한다.
+
+시작부에 기호를 두어서 구분.
+
+51ms. Beats 98.72%
+
+16.94MB. Beats 5.43%
+
+O(n)
+
+```python
+class Solution:
+    def isSubtree(self, root: Optional[TreeNode], subRoot: Optional[TreeNode]) -> bool:
+        str_r = self.traverse_tree(root)
+        str_s = self.traverse_tree(subRoot)
+        if str_s in str_r:
+            return True
+        return False
+    
+    def traverse_tree(self, s):
+        if s:
+            return f"#{s.val} {self.traverse_tree(s.left)} {self.traverse_tree(s.right)}"
+        return None
+```
+---
