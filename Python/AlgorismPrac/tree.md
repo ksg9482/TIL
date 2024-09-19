@@ -219,3 +219,132 @@ class Solution:
 ```
 ---
 
+https://leetcode.com/problems/binary-tree-level-order-traversal/description/?envType=problem-list-v2&envId=tree&difficulty=MEDIUM
+
+트리를 같은 깊이로 묶는 문제. 
+
+bfs를 같은 깊이별로 동작하게 하고 그 값을 집계한다.
+
+root가 None일 경우 정도 신경쓰면 된다
+
+36ms. Beats 79.01%
+
+17.02MB. Beats 93.66%
+
+O(n). 중단 없이 끝까지 순회
+
+```python
+class Solution:
+    def levelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        ans = []
+        def bfs(root):
+            if not root:
+                return None
+            
+            nodes_deque = deque([[root]])
+        
+            while nodes_deque:
+                temp = []
+                temp_list = []
+                nodes = nodes_deque.popleft()
+                for node in nodes:
+                    temp_list.append(node.val)
+                    if node.left:
+                        temp.append(node.left)
+                    if node.right:
+                        temp.append(node.right)
+                ans.append(temp_list)
+                if temp:
+                    nodes_deque.append(temp)
+        bfs(root)
+        
+        return ans
+```
+---
+
+https://leetcode.com/problems/binary-tree-zigzag-level-order-traversal/description/?envType=problem-list-v2&envId=tree&difficulty=MEDIUM
+
+트리를 같은 깊이로 묶는 문제. 
+
+단, 깊이를 하나 내려갈 때마다 좌우를 반전한다.
+
+bfs 로직은 같고, count를 둬서 홀짝으로 체크.
+
+32ms. Beats 81.58%
+
+16.76MB. Beats 40.98%
+
+O(n)
+
+```python
+class Solution:
+    def zigzagLevelOrder(self, root: Optional[TreeNode]) -> List[List[int]]:
+        ans = []
+        def bfs(root):
+            if not root:
+                return None
+            
+            nodes_deque = deque([[root]])
+            count = 0
+
+            while nodes_deque:
+                temp = []
+                temp_list = []
+                nodes = nodes_deque.popleft()
+                for node in nodes:
+                    temp_list.append(node.val)
+                    if node.left:
+                        temp.append(node.left)
+                    if node.right:
+                        temp.append(node.right)
+                if not count % 2 == 0:     
+                    temp_list.reverse()
+                ans.append(temp_list)
+                
+                if temp:
+                    nodes_deque.append(temp)
+                count += 1
+        bfs(root)
+        
+        return ans
+```
+---
+
+https://leetcode.com/problems/validate-binary-search-tree/description/?envType=problem-list-v2&envId=tree&difficulty=MEDIUM
+
+트리가 이진 검색 트리인지 확인하는 문제
+
+root를 기준으로 좌는 작아야 하고 그 서브트리도 이진검색의 조건을 만족
+
+우도 마찬가지.
+
+node, left, right 3개만 보면 맞아도 트리 전체로 보면 틀릴 수 있음.
+
+40ms. Beats 66.66%
+
+18.36MB. Beats 61.98%
+
+O(n)
+
+```python
+class Solution:
+    def isValidBST(self, root: Optional[TreeNode]) -> bool:
+        def checker(root, prev, result):
+            if root is None:
+                return
+            # prev 바꾸기 전에 left 확인
+            checker(root.left, prev, result)
+            if prev[0] and root.val <= prev[0].val:
+                result[0] = False
+                return
+            prev[0] = root
+            # right는 root 보다 커야 한다
+            checker(root.right, prev, result)
+        
+        prev = [None]
+        result = [True]
+        checker(root, prev, result)
+
+        return result[0]
+```
+---
