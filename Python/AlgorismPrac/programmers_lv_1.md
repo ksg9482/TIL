@@ -110,3 +110,57 @@ def solution(park, routes):
 ```
 ---
 
+https://school.programmers.co.kr/learn/courses/30/lessons/161990
+
+2차원 배열에서 최소, 최대 지점 찾는 문제
+
+최소는 0, 0을 기준으로 하지만 최대는 타겟을 건너가야 하기 때문에 x,y에 +1씩 해준다
+
+O(n)
+
+```python
+def solution(wallpaper):
+    answer = [-1, -1, -1, -1] # min_y, min_x, max_y + 1, max_x + 1
+    for y_idx, rows in enumerate(wallpaper):
+        for x_inx, col in enumerate(rows):
+            if col == "#":
+                if answer[0] == -1:
+                    answer[0] = y_idx
+                else:
+                    answer[0] = min(answer[0], y_idx)
+
+                if answer[1] == -1:
+                    answer[1] = x_inx
+                else:
+                    answer[1] = min(answer[1], x_inx)
+
+                answer[2] = max(answer[2], y_idx + 1)
+                answer[3] = max(answer[3], x_inx + 1)
+                    
+    return answer
+```
+---
+
+https://school.programmers.co.kr/learn/courses/30/lessons/161989
+
+배열의 타겟 요소를 길이m 안에 포함시키는 문제
+
+한번에 최대한 많은 타겟 요소를 처리해야 한다
+
+단위가 m이므로 한번 칠하고 그 다음 요소로 이동
+
+길이가 벗어나면 어차피 칠해졌으니 종료
+
+O(n/m). 리스트 길이 n, 단위 m. n은 클수록 오래걸리고 m은 작을수록 오래걸린다
+
+```python
+def solution(n, m, section):
+    answer = 0
+    painted = 0
+    for part in section:
+        if painted < part:
+            answer += 1    
+            painted = part + m - 1
+    return answer
+```
+---
