@@ -164,3 +164,96 @@ def solution(n, m, section):
     return answer
 ```
 ---
+
+https://school.programmers.co.kr/learn/courses/30/lessons/160586?language=python3
+
+문자열과 카운트를 매핑하는 문제.
+
+여러 문자열 리스트 중 최소값을 사전에 넣고 타겟을 계산한다.
+
+먼저 한번씩 순회, 타겟 리스트 순회
+
+O(n*m). keymap length * keymap[i] length
+
+```python
+def solution(keymap, targets):
+    answer = []
+    key_to_num_dict = defaultdict(int)
+    
+    for keys in keymap:
+        for count, key in enumerate(keys, 1):
+            if key_to_num_dict[key] == 0 or key_to_num_dict[key] > count:
+                key_to_num_dict[key] = count
+
+    for target in targets:
+        count = 0
+        for target_char in target:
+            if not key_to_num_dict[target_char]:
+                count = -1
+                break
+            count += key_to_num_dict[target_char]
+        answer.append(count)
+
+    return answer
+```
+---
+
+https://school.programmers.co.kr/learn/courses/30/lessons/159994
+
+두 문자열 리스트에서 짝이 맞는 문자열 찾는 문제
+
+두 리스트 중 하나라도 해당되면 통과. 바라보는 index + 1
+
+중간에 제거하지 못하면 실패
+
+O(n). goal이 길면 커진다.
+
+```python
+def solution(cards1, cards2, goal):
+    answer = 'Yes'
+    cards1_idx = cards2_idx = 0
+    for goal_text in goal:
+        if cards1_idx < len(cards1) and goal_text == cards1[cards1_idx]:
+            cards1_idx += 1
+            continue
+        if cards2_idx < len(cards2) and goal_text == cards2[cards2_idx]:
+            cards2_idx += 1
+            continue
+
+        return 'No'
+    
+    return answer
+```
+---
+
+https://school.programmers.co.kr/learn/courses/30/lessons/155652
+
+조건에 맞춰 문자열 변환하는 문제
+
+알파벳 리스트에서 skip을 미리 제거
+
+z 넘어가면 a로 돌아가는 것도 주의. 나머지 구해서 인덱스로 사용한다
+
+O(n). goal이 길면 커진다.
+
+```python
+def solution(s, skip, index):
+    answer = ''
+    skip_map = defaultdict(int)
+    for skip_char in skip:
+        skip_map[skip_char] = 1
+    skiped_alphabet_list = [alpha for alpha in string.ascii_lowercase if not skip_map[alpha]]
+    alphabet_to_idx_dict = defaultdict(int)
+    for idx, alpha in enumerate(skiped_alphabet_list):
+        alphabet_to_idx_dict[alpha] = idx
+
+    for s_char in s:
+        target_idx = alphabet_to_idx_dict[s_char] + index
+        if len(skiped_alphabet_list) <= target_idx:
+            target_idx = target_idx % len(skiped_alphabet_list)
+        answer += skiped_alphabet_list[target_idx]
+
+    return answer
+```
+---
+
