@@ -257,3 +257,52 @@ def solution(s, skip, index):
 ```
 ---
 
+https://school.programmers.co.kr/learn/courses/30/lessons/147355
+
+부분 배열과 타겟의 크기를 비교하는 문제
+
+타겟 길이 만큼 부분배열 만드는 반복문으로 체크
+
+타겟보다 크면 집계
+
+O(n)
+
+```python
+def solution(t, p):
+    p_len = len(p)
+    answer = 0
+    for i in range(p_len - 1, len(t)):
+        start = i - (p_len - 1)
+        if int(t[start:i + 1]) <= int(p):
+            answer += 1
+    return answer
+```
+---
+
+https://school.programmers.co.kr/learn/courses/30/lessons/142086
+
+동일한 문자가 어디에 있는지 찾는 문제
+
+처음 등장이면 -1, 재등장은 얼마나 멀리 떨어져 있는지
+
+사전으로 관리해서 없으면 첫등장. 인덱스 넣기
+
+재등장이면 계산. 최신화.
+
+O(n)
+
+```python
+def solution(s):
+    answer = []
+    char_to_idx_dict = {}
+    for idx, s_char in enumerate(s):
+        if not s_char in char_to_idx_dict:
+            answer.append(-1)
+            char_to_idx_dict[s_char] = idx
+        else:
+            answer.append(idx - char_to_idx_dict[s_char])
+            char_to_idx_dict[s_char] = idx
+
+    return answer
+```
+---
