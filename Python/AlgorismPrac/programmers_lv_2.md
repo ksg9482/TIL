@@ -94,3 +94,122 @@ def solution(n):
     return answer + 1
 ```
 ---
+
+https://school.programmers.co.kr/learn/courses/30/lessons/12911
+
+숫자 비교하는 문제. n보다 큰 수를 찾는다. 단, 2진수로 바꾸면 1의 개수가 같아야 한다
+
+반복문으로 대상 찾기. 
+
+O(n)
+
+```python
+def solution(n):
+    answer = 0
+    n_count = format(n, 'b').count('1')
+    target = n + 1
+    while True:
+        if n_count == format(target, 'b').count('1'):
+            answer = target
+            break
+        target += 1
+
+    return answer
+```
+---
+
+https://school.programmers.co.kr/learn/courses/30/lessons/12973
+
+짝지어 제거할 수 있는 문자 나오면 제거하는 문제
+
+스택으로 관리. 반복 후 스택에 없으면 다 제거된 것 
+
+O(n)
+
+```python
+def solution(s):
+    s_stack = deque()
+    for i in s:
+        if not s_stack:
+            s_stack.append(i)
+        elif s_stack[-1] == i: #바로 찾는거부터 나오면 에러
+            s_stack.pop()
+        else:
+            s_stack.append(i)
+    
+    if not s_stack:
+        return 1
+
+    return 0
+```
+---
+
+https://school.programmers.co.kr/learn/courses/30/lessons/12914?language=python3
+
+배열부터 미리 만들기. 어차피 2칸까지는 간단.
+
+n칸 뛰고 1칸이나 2칸 뛰도록.
+
+답은 1234567로 나눈 나머지여야 함 
+
+O(n)
+
+```python
+def solution(n):
+    dp = [0] * (n+1)
+    dp[0] = 1
+    dp[1] = 2
+    
+    for i in range(2,n):
+        dp[i] = dp[i-2] + dp[i-1]
+	
+    return dp[n-1] % 1234567
+```
+---
+
+https://school.programmers.co.kr/learn/courses/30/lessons/12953
+
+최소공배수는 계속 관리해야 함. 누적됨
+
+어차피 몫만 구하면 된다. 최소공배수 구하는 gcd이용
+
+O(n)
+```python
+def solution(arr):
+    answer = arr[0]
+
+    for num in arr:
+        answer = answer * num // gcd(answer, num)     
+
+    return answer
+```
+---
+
+https://school.programmers.co.kr/learn/courses/30/lessons/138476
+
+개수 세서 미리 사전만들기
+
+정렬해서 연산
+
+k가 0이 되면 종료
+
+O(n)
+```python
+def solution(k, tangerine):
+    answer = 0
+    size_to_count = {}
+    for i in tangerine:
+        if i in size_to_count:
+            size_to_count[i]+=1
+        else:
+            size_to_count[i]=1
+    size_to_count = dict(sorted(size_to_count.items(), key=lambda x: x[1], reverse=True))
+    for i in size_to_count:
+        if k<=0:
+            return answer
+        k-=size_to_count[i]
+        answer+=1
+
+    return answer
+```
+---
