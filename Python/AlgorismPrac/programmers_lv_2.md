@@ -58,7 +58,15 @@ https://school.programmers.co.kr/learn/courses/30/lessons/12941
 O(n)
 
 ```python
+def solution(A,B):
+    answer = 0
 
+    A.sort()
+    B.sort(reverse=True)
+    for min_item, max_item in zip(A, B):
+        answer += (min_item * max_item)
+
+    return answer
 ```
 ---
 
