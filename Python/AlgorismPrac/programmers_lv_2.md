@@ -221,3 +221,28 @@ def solution(k, tangerine):
     return answer
 ```
 ---
+https://school.programmers.co.kr/learn/courses/30/lessons/138476
+
+괄호 짝짓는 문제. 스택으로 처리
+
+어차피 괄호는 종류 고정. 그냥 함.
+
+괄호 안열고 시작할 경우, 괄호 남은 경우 올바르지 않음
+
+O(n)
+
+```python
+def solution(s):
+    stack = []
+    for i in s:
+        if i == '(':
+            stack.append(i)
+        else:
+            if stack == []:
+                return False
+            else:
+                stack.pop()
+    if stack != []:
+        return False
+    return True
+```
