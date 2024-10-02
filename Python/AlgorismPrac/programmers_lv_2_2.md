@@ -125,3 +125,55 @@ def solution(n, words):
     return answer
 ```
 ---
+https://school.programmers.co.kr/learn/courses/30/lessons/12985
+
+두 변수 A, B가 n-1, n이 될때까지 n/2 반복하는 문제. 
+
+A, B 두 변수가 소수면 올리기에 두 수가 같아지면 종료
+
+O(n)
+
+```python
+def solution(n,a,b):
+    answer = 0
+    while True:
+        a = math.ceil(a / 2)
+        b = math.ceil(b / 2)
+        answer += 1
+
+        if a == b:
+            break
+        
+    return answer
+```
+---
+
+https://school.programmers.co.kr/learn/courses/30/lessons/42586?language=python3
+
+프로세스 진행율을 큐로 관리하는 문제. 
+
+[0]번째 요소가 완료되어야 이후 프로세스 진행. 100이상 되면 그 이후 100이상되는 모든 기능 한꺼번에 집계
+
+한번에 몇개씩 집계되나 확인
+
+O(n)
+
+```python
+def solution(progresses, speeds):
+    answer = []
+    while progresses:
+        temp = 0
+        if progresses[0] < 100:
+            for i, (p, s) in enumerate(zip(progresses, speeds)):
+                progresses[i] += s
+        else:
+            while progresses and progresses[0] >= 100:
+                progresses.pop(0)
+                speeds.pop(0)
+                temp += 1
+            if temp:
+                answer.append(temp)
+
+    return answer
+```
+---
