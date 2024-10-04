@@ -177,3 +177,72 @@ def solution(progresses, speeds):
     return answer
 ```
 ---
+https://school.programmers.co.kr/learn/courses/30/lessons/131701
+
+부분수열의 합 리스트를 구하는 문제.
+
+원형 큐이므로 각 스타트 위치별로 부분수열이 생겨서 개수가 더 많아짐
+
+중복 없는 합을 구하기에 set으로 답 관리
+
+O(n)
+
+```python
+def solution(elements):
+    answer = set()
+    deq = deque(elements)
+    for _ in range(len(deq)):
+        val_sum = 0
+        for e in deq:
+            # deq[0] ... deq[0 + n]. 더한 부분수열 값 set으로.
+            # 각 front에서 만들 수 있는 부분수열 합이 구해짐
+            val_sum += e
+            answer.add(val_sum)
+        # 원형 큐 -> front 달라짐. front요소를 뒤로 보내 그 다음 순서 구현
+        deq.append(deq.popleft())
+
+    return len(answer)
+'''
+---
+
+https://school.programmers.co.kr/learn/courses/30/lessons/76502
+
+괄호 리스트를 한쪽으로 회전시킬 때 올바른 괄호 문자열이 몇개 나오는지 확인하는 문제
+
+판단여부는 스택으로 확인
+
+한번 끝났다고 마치는 게 아니라 결국 다 순회해서 확인해야 함.
+
+순회 마치면 스택이 비어야 올바른 문자열.
+
+O(n)
+
+```python
+def solution(s):
+    answer = 0
+    s_deq = deque(s)
+
+    for _ in range(len(s_deq)):
+        stack = deque()
+        for i in s_deq:
+            if i == '[':
+                stack.append(']')
+            elif i == '{':
+                stack.append('}')
+            elif i == '(':
+                stack.append(')')
+            else:
+                if not stack:
+                    break
+                if stack[-1] == i:
+                    stack.pop()
+                else:
+                    break
+        else:
+            if not stack:
+                answer += 1
+        s_deq.append(s_deq.popleft())
+
+    return answer
+```
+---
