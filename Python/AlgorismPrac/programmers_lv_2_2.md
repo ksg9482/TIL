@@ -246,3 +246,42 @@ def solution(s):
     return answer
 ```
 ---
+
+https://school.programmers.co.kr/learn/courses/30/lessons/131127?language=python3
+
+10일간 원하는 아이템이 매칭되는지 확인하는 문제
+
+제품, 수량이 일치하는 날 -> 10일 안에 다 포함되는 경우만 집계
+
+원하는 아이템과 개수를 사전, 10일 간 아이템과 개수를 사전화
+
+다 동일하면 +1. 없거나 다르면 다음.
+
+O(n*m). want만큼 반복마다 순회해야 하고, 전체적으로 discount만큼 다 순회해야 함.
+
+```python
+def solution(want, number, discount):
+    answer = 0
+    item_to_want = {item: count for item, count in zip(want, number)}
+    discount_to_item = {}
+    discount_deq = deque()
+
+    for item in discount:
+        if len(discount_deq) >= 10:
+            poped = discount_deq.popleft()
+            discount_to_item[poped] -= 1
+        if not discount_to_item.get(item):
+            discount_to_item[item] = 1
+        else:
+            discount_to_item[item] += 1
+        discount_deq.append(item)
+
+        for wanted in item_to_want:
+            if not item_to_want[wanted] == discount_to_item.get(wanted):
+                break
+        else:
+            answer += 1
+            
+    return answer
+```
+---
