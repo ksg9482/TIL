@@ -285,3 +285,37 @@ def solution(want, number, discount):
     return answer
 ```
 ---
+https://school.programmers.co.kr/learn/courses/30/lessons/87390
+
+n행, n열 2차원 배열
+
+i행 i열까지 i로 채움
+
+n행을 모두 이어붙여 1차원배열
+
+arr[left] ... arr[right]만 남기고 제거
+
+O(n^2). left, right에 맞춰서 끊었지만 본질적으로는 2차원 배열을 생성함. 찾아보니 1차원 배열로 바로 하는 솔루션이 정석인듯
+
+```python
+def solution(n, left, right):
+    answer = []
+    matrix = []
+    left_start = left // n
+    right_start = math.ceil(right / n)
+    for i in range(left_start + 1, right_start + 2):
+        temp = []
+        for j in range(1,  n + 1):
+            if i >= j:
+                temp.append(i)
+            else:
+                temp.append(j)
+        else:
+            matrix.append(temp)
+    answer = [y for x in matrix for y in x]
+    start = left % n
+    end = start + (right - left + 1)
+    
+    return answer[start:end]
+```
+---
