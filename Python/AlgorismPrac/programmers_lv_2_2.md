@@ -319,3 +319,108 @@ def solution(n, left, right):
     return answer[start:end]
 ```
 ---
+
+https://school.programmers.co.kr/learn/courses/30/lessons/12949
+
+행렬곱 하는 문제이다. 조건은 간단하다. 행렬곱을 하는 것.
+
+문제는 행렬곱을 그다지 접해본 적이 없다는 것이다. 
+
+1. 두 행렬의 크기에 따라 생성된 행렬곱은 크기가 정해짐 -> 미리 만들어 놓을 수 있음
+
+2. 사실상 곱을 누적하는 개념. 
+
+행렬곱에 들어갈 위치에 값을 누산한다.
+
+O(n*m)
+
+```python
+def solution(arr1, arr2):
+    rows_arr1 = len(arr1)
+    cols_arr1 = len(arr1[0])
+    cols_arr2 = len(arr2[0])
+    
+    # 행렬곱이 수행된 리스트 크기는 정해져 있음.
+    answer = [[0 for _ in range(cols_arr2)] for _ in range(rows_arr1)]
+    
+    for i in range(rows_arr1):
+        for j in range(cols_arr2):
+            for k in range(cols_arr1):
+                # X축 * Y축으로 값을 구하고 지정된 그 값을 합산 -> 지정된 위치에 누산
+                answer[i][j] += arr1[i][k] * arr2[k][j]
+    
+    return answer
+```
+---
+
+https://school.programmers.co.kr/learn/courses/30/lessons/17680
+
+캐시를 구성하는 문제.
+
+LRU로 캐시를 관리해야 하기 때문에 호출되지 않은 city를 구분해야 한다.
+
+deque를 이용해서 호출된 city를 append. 호출되지 않은 city는 popleft 대상.
+
+cache size가 0인 경우 엣지케이스 -> pop을 못함.
+
+대소문자 구분 하지 않는 점도 중요.
+
+O(n)
+
+```python
+def solution(cacheSize, cities):
+    answer = 0
+    cache = deque(maxlen=cacheSize)
+    cities = [city.lower() for city in cities]
+    for city in cities:
+        if not city in cache:
+            answer += 5
+            if not cacheSize:
+                continue
+            if len(cache) < cacheSize:
+                cache.append(city)
+            else:
+                cache.popleft()
+                cache.append(city)
+        else:
+            answer += 1
+            poped = cache[cache.index(city)]
+            cache.remove(city)
+            cache.append(poped)
+
+    return answer
+```
+---
+
+https://school.programmers.co.kr/learn/courses/30/lessons/64065
+
+튜플을 구성하는 문제.
+
+문자열을 리스트로 변환 -> 리스트를 튜플로 변환
+
+배열의 순서가 달라도 같은 튜플이다. 단, 요소가 1개일 때는 그게 무조건 튜플 시작.
+
+즉, 요소 1개일 때 리스트 삽입, 2개 일때 리스트에 없는 요소 삽입.... 반복
+
+리스트를 계속 순회하는 것은 비효율적이니 사전으로 관리한다. 사전은 순서가 보장된다.
+
+요소를 오름차순으로 정렬 -> 정렬대로 사전에 등록되기에 사전 순서가 곧 튜플 순서.
+
+O(n)
+
+```python
+def solution(s):
+    answer = []
+    tuple_key_to_idx = {}
+    str_lists = [i.split(',') for i in s[2:-2].split('},{')]
+    str_lists.sort(key=lambda x: len(x))
+    for str_list in str_lists:
+        for idx, str_num in enumerate(str_list):
+            if tuple_key_to_idx.get(str_num) == None:
+                tuple_key_to_idx[str_num] = idx
+    for tuple_val in tuple_key_to_idx.keys():
+        answer.append(int(tuple_val))
+
+    return answer
+```
+---
