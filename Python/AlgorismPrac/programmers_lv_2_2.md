@@ -424,3 +424,62 @@ def solution(s):
     return answer
 ```
 ---
+https://school.programmers.co.kr/learn/courses/30/lessons/17677
+
+자카드 유사도 구하는 문제. 단, 부분집합으로 계산해야 바로 set에 넣지는 못한다.
+
+전처리 후 카운터로 숫자 집계.
+
+카운터 객체를 이용해서 교집합, 합집합 생성.
+
+O(n)
+
+```python
+def solution(str1, str2):
+    two_split_str1 = [str1[i-1:i+1] for i in range(1, len(str1))]
+    two_split_str2 = [str2[i-1:i+1] for i in range(1, len(str2))]
+    two_split_str1 = [s.lower() for s in filter(lambda s:s.isalpha(), two_split_str1)]
+    two_split_str2 = [s.lower() for s in filter(lambda s:s.isalpha(), two_split_str2)]
+
+    counter1 = Counter(two_split_str1)
+    counter2 = Counter(two_split_str2)
+    inter = list((counter1 & counter2).elements())
+    union = list((counter1 | counter2).elements())
+
+    if len(union) == 0 and len(inter) == 0:
+        return 65536
+    else:
+        return int(len(inter) / len(union) * 65536)
+```
+---
+
+https://school.programmers.co.kr/learn/courses/30/lessons/43165
+
+숫자 리스트의 일부를 음수로 바꾸며 누산 했을 때 타겟과 동일한 수가 나오는지 확인하는 문제
+
+분류가 dfs / bfs.
+
+처음은 양수만 있으니 음수로 하나씩 바꿔간다
+
+O(n)
+
+```python
+def solution(numbers, target):
+    def dfs(numbers, target, depth):
+        answer = 0
+        if depth == len(numbers): # leave
+            # 끝까지 간걸로 다 더한다
+            if sum(numbers) == target:
+                return 1
+            else:
+                return 0
+        else:
+            # 먼저 양수 보내고 다음에 음수 보내면 양수, 음수로 점점 늘어감.
+            answer += dfs(numbers, target, depth + 1)
+            numbers[depth] *= -1 # 한칸씩 음수로 만들어 간다
+            answer += dfs(numbers, target, depth + 1)
+            return answer
+        
+    return dfs(numbers, target, 0)
+```
+---
