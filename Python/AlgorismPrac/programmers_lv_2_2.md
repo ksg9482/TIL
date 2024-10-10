@@ -483,3 +483,34 @@ def solution(numbers, target):
     return dfs(numbers, target, 0)
 ```
 ---
+https://school.programmers.co.kr/learn/courses/30/lessons/87946
+
+완전탐색. 경우의 수를 다 따져봐서 해답을 구한다
+
+dfs로 진행하되, 이미 방문한 요소를 체크.
+
+dfs는 카운트를 따로 설정해서 최대한 depth를 내려가고 갱신되면 해답도 갱신
+
+O(n)
+
+```python
+def solution(k, dungeons):
+    global answer
+    answer = 0
+    visited = [0]*len(dungeons)
+
+    def dfs(k, cnt, dungeons):
+        global answer
+        if cnt > answer:
+            answer = cnt
+        for i in range(len(dungeons)):
+            if not visited[i] and k >= dungeons[i][0]:
+                visited[i] = 1
+                dfs(k-dungeons[i][1], cnt + 1, dungeons)
+                # dfs로 진행이 끝난 후 visited를 초기화 -> 백트래킹
+                visited[i] = 0
+
+    dfs(k, 0, dungeons)
+
+    return answer
+```
